@@ -11,9 +11,7 @@
 
 %%
 
-[\t\n]+    { ; }
-" "         { return TOKEN(NEUTRAL);}
-
+[ \t\n]+    { ; }
 "."         { return TOKEN(PRINT); }
 ","         { return TOKEN(READ); }
 ">"         { return TOKEN(RIGHT); }
@@ -27,9 +25,9 @@
 "["         { return TOKEN(LBRACKET); }
 "]"         { return TOKEN(RBRACKET); }
 "#"         { return TOKEN(NEUTRAL); }
-"("         { return TOKEN(LPAR); }
-")"         { return TOKEN(RPAR); }
-"?"         { return TOKEN(WILDCARD); }
+"("         { return TOKEN(NEUTRAL); }
+")"         { return TOKEN(NEUTRAL); }
+"?"         { return TOKEN(NEUTRAL); }
 
 .           { ; }
 

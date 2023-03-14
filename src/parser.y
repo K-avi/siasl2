@@ -21,11 +21,9 @@
   int token;
 }
 
-%token <token> PRINT READ LEFT RIGHT UP DOWN PLUS MINUS MULT DIV NEUTRAL WILDCARD
+%token <token> PRINT READ LEFT RIGHT UP DOWN PLUS MINUS MULT DIV NEUTRAL
 %token <token> LBRACKET RBRACKET
-%token <token> LPAR RPAR
 
-%type <symbol> token token
 %type <instruction> program stmts stmt loop
 %type <token> op
 
@@ -44,7 +42,6 @@ stmts
 
 stmt
   : loop { $$ = $1; }
-  | defun {;}
   | op   { $$ = mkinstruction($1); }
 ;
 
@@ -58,11 +55,6 @@ loop
     }
 ;
 
-defun
-  : LPAR stmts RPAR{
-        ;
-  }
-
 op
   : PRINT
   | READ
@@ -75,7 +67,6 @@ op
   | MULT
   | DIV
   | NEUTRAL
-  | WILDCARD
 ;
 
 %%
