@@ -1,0 +1,6 @@
+*.o 
+lex.*.* 
+parser.tab.*
+test
+siasl2
+.vscode*
