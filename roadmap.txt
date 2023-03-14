@@ -1,0 +1,85 @@
+SIASL : 
+    -will support 13 base instructions; 
+    -parsers using flex/bison : 
+        - brainfuck like parser 
+       
+    -command line and file interpreter 
+
+
+
+
+
+(SIASL)² 1.0: 
+    -will support default combined instructions 
+    -UTF-8 parser; BF-like parser; Number parser
+
+(SIASL)² 2.0: 
+    
+    -will support defining behavior for symbols
+    -will support redefining behavior for existing symbols (oh boy!)
+
+
+(SIASL²) 1.0 : 
+
+    utf 8 parser might be a lie I dont think i'll do it 
+
+    will focus on bflike parser for now. 
+
+    how will it work : 
+
+    bison will parse n add a token comprised of 2 elements.
+
+    BEFORE being happened to instructions 
+
+        -> translate it to internal stuff; 
+        -> put them in order (shortest one first )
+        -> check in a table what instructions have to be done for it ?
+
+        -> maybe separate default instructions from other one??
+
+        "+ " eq " +" eq "#+" eq "+#"
+    
+    have a default op table and a settable table .
+
+default op : 
+
+arithmetics plus : 
+
++>  curval+=matrix->right->val
++<
++v
++^
+
+similar idea with * , - , / 
+
+++ curval+= matrix->val 
+// curval= 1  (curval /=matrix->val but doesnt break if zero) maybe round sqrt???
+** curval= curval*curval
+
+>> good question maybe skip to end of current line 
+<< beginning? 
+v< bottom left? 
+>v bottom right ? 
+^< so on
+
+
+[> , [v ... loop n go this direction at the end of every loop 
+[- loop n decrement...
+
+
+FORMAT for , and . +. is %u, -. %d ... %.3f %c ,...
+
+
+(,), ? , # will all be neutral atm (except maybe for print formatting)
+
+
+
+
+
+
+
+
+
+
+
+
