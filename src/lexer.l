@@ -27,7 +27,7 @@
 "#"         { return TOKEN(NEUTRAL); }
 "("         { return TOKEN(NEUTRAL); }
 ")"         { return TOKEN(NEUTRAL); }
-"?"         { return TOKEN(NEUTRAL); }
+"?"         { return TOKEN(WILDCARD); }
 
 .           { ; }
 

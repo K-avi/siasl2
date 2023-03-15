@@ -21,11 +21,12 @@
   int token;
 }
 
-%token <token> PRINT READ LEFT RIGHT UP DOWN PLUS MINUS MULT DIV NEUTRAL
+%token <token> PRINT READ LEFT RIGHT UP DOWN PLUS MINUS MULT DIV NEUTRAL WILDCARD
 %token <token> LBRACKET RBRACKET
 
 %type <instruction> program stmts stmt loop
-%type <token> op
+%type <token> syllable
+%type <symbol> token token 
 
 %start program
 
@@ -42,7 +43,7 @@ stmts
 
 stmt
   : loop { $$ = $1; }
-  | op   { $$ = mkinstruction($1); }
+  | symbol   { $$ = mkinstruction($1, $2); }
 ;
 
 loop
@@ -55,7 +56,7 @@ loop
     }
 ;
 
-op
+syllable
   : PRINT
   | READ
   | LEFT
@@ -67,6 +68,9 @@ op
   | MULT
   | DIV
   | NEUTRAL
+  | WILDCARD
+  | LBRACKET 
+  | RBRACKET
 ;
 
 %%

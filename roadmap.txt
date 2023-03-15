@@ -11,18 +11,18 @@ SIASL :
 
 (SIASL)² 1.0: 
     -will support default combined instructions 
-    -UTF-8 parser; BF-like parser; Number parser
+    -BF-like parser; decimal number parser; hex parser
 
 (SIASL)² 2.0: 
     
     -will support defining behavior for symbols
-    -will support redefining behavior for existing symbols (oh boy!)
+    -might support redefining behavior for some existing symbols (oh boy!)
 
 
 (SIASL²) 1.0 : 
 
-    utf 8 parser might be a lie I dont think i'll do it 
 
+    utf 8 parser might be a lie I dont think i'll do it 
     will focus on bflike parser for now. 
 
     how will it work : 
@@ -76,7 +76,8 @@ FORMAT for , and . +. is %u, -. %d ... %.3f %c ,...
 
 ?+ increments a random cell?  
 
-(,), ? , # will all be neutral atm (except maybe for print formatting)
+
+(,), , # will all be neutral atm (except maybe for print formatting)
 
 
 
