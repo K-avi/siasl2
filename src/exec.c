@@ -25,7 +25,9 @@ int exec_prgm( instruction* program, CELLMATRIX* environment, S_STACK* stack) {
     unsigned short instruction = curr->symbol.token1 | ((curr->symbol.token2)<<4);
   //printf("%u %u %b\n",curr->symbol.token1 , curr->symbol.token2 ,instruction );
     switch (instruction) {
-        case (INT_NEUT<<4) | INT_NEUT:  break;
+
+      /* default operations; the one that already are in SIASL */
+        case (INT_NEUT<<4) | INT_NEUT:  break; //neutral op 
 
         case (INT_LEFT<<4)| INT_NEUT: idx=OP_LEFT(idx, matsize);  break;
 
@@ -60,6 +62,13 @@ int exec_prgm( instruction* program, CELLMATRIX* environment, S_STACK* stack) {
         case (INT_RBRACKET <<4) | INT_NEUT :
             curr = stack->stack[--stack_ptr];
             continue;
+      
+      /*new predefined operations */
+
+      case (INT_LEFT<<4)| INT_LEFT: idx=0;  break; //goes to first square
+
+      case (INT_MULT <<4) | INT_MULT :environment->mat[idx]*=environment->mat[idx]; break;
+
             
         default: 
          break;
