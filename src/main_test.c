@@ -13,7 +13,7 @@ int main(){
    CELLMATRIX* environment= init_mat(DEFAULT_ROWSIZE);
    S_STACK * stack= init_stack(STACK_SIZE);
 
-   interactive_interp(environment, stack);
+   interactive_interp(environment, stack, 'c');
 
    free_stack(stack); 
    

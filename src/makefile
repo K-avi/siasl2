@@ -1,4 +1,4 @@
-TARGET := ../siasl
+TARGET := ../siasl2
 
 TEST := ../test
 CC := gcc

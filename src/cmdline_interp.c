@@ -12,6 +12,9 @@ extern instruction * prog;
 
 
 char hexTObf( char hexChr ){
+   /*
+   doesn't translate wildcard correctly atm 
+   */
    switch (hexChr){
       
       case '0' : return '#'; break;
@@ -55,7 +58,8 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
     fflush(stdin); 
     fflush(stdout);
 
-   // printf("before loop %p %p %p\n", prog, environment, stack);
+    char lprint=1;
+
     printf("welcome to the SIASL interactive interpreter!\n>>> ");
     while( fgets(line, 256, stdin)){
 
@@ -65,11 +69,16 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
 
          char * tmp= line; 
 
-         while(*tmp==' '|| *tmp=='\t' || *tmp=='\n') ++tmp;
-         if((*tmp)=='\0') {
+         while((*tmp==' '|| *tmp=='\t' || *tmp=='\n')) ++tmp;
+         if((*tmp)=='\0' && lprint) {
             printf(">>> ");
             continue;
+         }else if ((*tmp)=='\0'){
+            lprint=1; 
+            continue;
          }
+         
+         if(!lprint) lprint=1;
        
          if(!strncmp(line, "quit", 4)){
             break;
@@ -96,7 +105,7 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
          }
          
 
-         parsed_to_int(prog);
+         //parsed_to_int(prog);
  
          exec_prgm(prog, environment, stack);
          
@@ -112,6 +121,8 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
          printf("\n>>>");
         }else{
          printf(">>>");
+         lprint=0;
+         
         }
    }
    printf("bye!\n"); 

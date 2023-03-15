@@ -1,27 +1,57 @@
 #include "ast.h"
-#include "parser.tab.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 
-
-
-Symbol symbol_from_syllable( unsigned char sil1 , unsigned char  sil2){
-    
+int bison_token_to_internal( int token){
+    /*
+    converts flex/bison generated token to internal rep; 
+    will be usefull down the line cuz multiple parsers n shit
+    */
    
-     if (sil1 > sil2) {
-        Symbol ret= {sil2, sil1};
+    switch (token){
+        case PRINT: return INT_PRINT; break;
+        case READ: return INT_READ; break;
+        case LEFT: return INT_LEFT; break;
+        case RIGHT: return INT_RIGHT; break; 
+        case UP: return INT_UP; break;
+        case DOWN: return INT_DOWN; break;
+        case PLUS: return INT_PLUS; break;
+        case MINUS: return INT_MINUS; break;
+        case MULT: return INT_MULT; break;
+        case DIV: return INT_DIV; break;
+        case NEUTRAL: return INT_NEUT;
+        case LBRACKET: return INT_LBRACKET; break;
+        case RBRACKET: return INT_RBRACKET; break;
+        case WILDCARD: return INT_WILDCARD ; break;
+        default: return INT_NEUT; 
+        
+    }
+
+    return INT_NEUT;
+}//not tested
+
+Symbol symbol_from_syllable( int tok1 , int  tok2){
+    
+  
+
+     unsigned short i_tok1= bison_token_to_internal(tok1), i_tok2=bison_token_to_internal(tok2);
+     //printf("in sym from syll %d %d %u %u\n", tok1, tok2, i_tok1 , i_tok2);
+     if (i_tok1 > i_tok2) {
+        Symbol ret= {i_tok2, i_tok1};
         return ret;
      }else {
-        Symbol ret= {sil1, sil2};
+        Symbol ret= { i_tok1, i_tok2};
         return ret;
      }
 
 }
 
-instruction * mkinstruction(int token) {
+instruction * mkinstruction( Symbol sym) {
+   // printf("in mkinstr %d %d\n", sym.token1, sym.token2);
   instruction* ret = (instruction*)malloc(sizeof(instruction));
-  ret->token = token;
+  ret->symbol.token1 = sym.token1;
+  ret->symbol.token2 = sym.token2;
   ret->next = NULL;
  
   ret->other = NULL;
@@ -56,32 +86,7 @@ void free_instruct( instruction* parsed_prog){
     }
 }
 
-int bison_token_to_internal( int token){
-    /*
-    converts flex/bison generated token to internal rep; 
-    will be usefull down the line cuz multiple parsers n shit
-    */
-   
-    switch (token){
-        case PRINT: return INT_PRINT; break;
-        case READ: return INT_READ; break;
-        case LEFT: return INT_LEFT; break;
-        case RIGHT: return INT_RIGHT; break; 
-        case UP: return INT_UP; break;
-        case DOWN: return INT_DOWN; break;
-        case PLUS: return INT_PLUS; break;
-        case MINUS: return INT_MINUS; break;
-        case MULT: return INT_MULT; break;
-        case DIV: return INT_DIV; break;
-        case NEUTRAL: return INT_NEUT;
-        case LBRACKET: return INT_LBRACKET; break;
-        case RBRACKET: return INT_RBRACKET; break;
-        default: return -1;
-        
-    }
 
-    return -1;
-}//not tested
 
 int parsed_to_int( instruction * parsed_prog){
     /*
@@ -93,13 +98,15 @@ int parsed_to_int( instruction * parsed_prog){
    
     while(curr){
        
-        int curtoken= bison_token_to_internal(curr->token);
-        if(curtoken<=0){
-            return curtoken; //return token error
+        int curtoken1= bison_token_to_internal(curr->symbol.token1), curtoken2= bison_token_to_internal(curr->symbol.token2) ;
+        if(curtoken1<=0 || curtoken2<=0 ){
+
+            return curtoken1 | curtoken2; //return token error
         }
 
-        curr->token=curtoken;
-     
+        curr->symbol.token1=curtoken1;
+        curr->symbol.token2=curtoken2;
+
         curr=curr->next; 
     }
     return 1; //returns OK
@@ -122,7 +129,8 @@ char token_to_char(int token){
     case INT_NEUT: return '#'; break;
     case INT_READ: return ','; break;
     case INT_PRINT: return '.'; break;
-    default : return '?'; break;
+    case INT_WILDCARD: return '?'; break;
+    default : return 'x'; break;
     }
 
     return '?';
@@ -133,7 +141,7 @@ void printprgm( instruction * prgm){
     instruction * cur=prgm; 
 
     while(cur){
-        printf("%c", token_to_char(cur->token));
+        printf("%c%c", token_to_char(cur->symbol.token1), token_to_char(cur->symbol.token2) );
         cur=cur->next;
     }
     printf("\n");

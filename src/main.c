@@ -41,12 +41,12 @@ int main(int argc, char ** argv){
 
     signal(SIGINT, *sigint_handler );
 
-    u_char cmdline_mode=1, file_mode=0;
+    unsigned char cmdline_mode=1, file_mode=0;
 
-    u_char simode=1 , hexmode=0;
+    unsigned char simode=1 , hexmode=0;
 
 
-    u_char helpset=0;
+    unsigned char helpset=0;
 
     char* filename = NULL;
     int c;
@@ -182,7 +182,7 @@ int main(int argc, char ** argv){
 
         /*translating prog and executing*/
     
-        parsed_to_int(prog);
+       // parsed_to_int(prog);
         exec_prgm(prog, environment, stack);
 
         /*freeing everything after exec*/

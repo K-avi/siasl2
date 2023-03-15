@@ -1,15 +1,13 @@
 #ifndef AST_H 
 #define AST_H
 
-typedef struct symbol{ 
-    unsigned char syllable1 ; 
-    unsigned char syllable2 ; 
+#include "parser.tab.h"
 
-}Symbol;
+typedef struct symbol Symbol;
 
 typedef struct instruction{
 
-    int token;
+    Symbol symbol ;
     struct instruction* next; 
     struct instruction* other;
 
@@ -19,9 +17,10 @@ extern void free_instruct( instruction* parsed_prog);
 
 extern  int parsed_to_int( instruction * parsed_prog);
 
-extern instruction * mkinstruction(int token);
+extern instruction * mkinstruction(Symbol sym );
 extern instruction * add_instruction( instruction* program, instruction * instruct);
  
+ Symbol symbol_from_syllable( int tok1 , int  tok2);
 
 extern void printprgm( instruction * prgm);
 
@@ -34,6 +33,6 @@ typedef struct list{
 */
 
 enum { INT_NEUT=1 , INT_LEFT , INT_RIGHT, INT_UP , INT_DOWN , INT_PLUS, INT_MINUS, INT_MULT, 
-INT_DIV ,INT_READ, INT_PRINT, INT_LBRACKET, INT_RBRACKET };
+INT_DIV ,INT_READ, INT_PRINT, INT_LBRACKET, INT_RBRACKET, INT_WILDCARD };
 
 #endif

@@ -14,11 +14,15 @@
   void yyerror(const char *s);
 
   struct instruction * prog;
+  
 %}
 
 %union {
   struct instruction* instruction;
   int token;
+
+  struct symbol{ int token1; int token2; } sym;
+
 }
 
 %token <token> PRINT READ LEFT RIGHT UP DOWN PLUS MINUS MULT DIV NEUTRAL WILDCARD
@@ -26,7 +30,9 @@
 
 %type <instruction> program stmts stmt loop
 %type <token> syllable
-%type <symbol> token token 
+%type <sym> loop_start loop_end symbol
+
+
 
 %start program
 
@@ -43,11 +49,11 @@ stmts
 
 stmt
   : loop { $$ = $1; }
-  | symbol   { $$ = mkinstruction($1, $2); }
+  | symbol   { $$ = mkinstruction($1); }
 ;
 
 loop
-  : LBRACKET stmts RBRACKET {
+  : loop_start stmts loop_end {
       $$ = mkinstruction($1);
       $$->next = $2;
       $$->other = mkinstruction($3);
@@ -55,6 +61,24 @@ loop
       $$->other->other = $$;
     }
 ;
+
+loop_start
+  : LBRACKET NEUTRAL { $$=symbol_from_syllable( $1, $2);}
+  | NEUTRAL LBRACKET { $$=symbol_from_syllable( $1, $2);}
+
+loop_end
+  : RBRACKET NEUTRAL { $$=symbol_from_syllable( $1, $2);}
+  | NEUTRAL RBRACKET { $$=symbol_from_syllable( $1, $2);}
+
+
+symbol 
+  : syllable syllable {
+    $$=symbol_from_syllable( $1, $2);
+  }
+  | syllable {
+    $$=symbol_from_syllable( NEUTRAL, $1);
+  }
+  
 
 syllable
   : PRINT
