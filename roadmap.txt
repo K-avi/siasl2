@@ -61,6 +61,8 @@ similar idea with * , - , /
 v< bottom left? 
 >v bottom right ? 
 ^< so on
+vv ?????
+^^ ?????
 
 
 [> , [v ... loop n go this direction at the end of every loop 
@@ -81,9 +83,26 @@ FORMAT for , and . +. is %u, -. %d ... %.3f %c ,...
 
 
 
+need to do the two movement type of stuff ; or maybe not i dont know   
 
+also need to make some wildcard stuff possible; 
+then gonna make a release for (SIASL)² alpha n then gonna do a beta version of
+it; 
 
+ideas for wildcard: 
 
+?(op) : operation on a random cell 
+
+?> change sense of execution from left to right 
+?< change sense of execution from right to left 
+
+to make this possible need to turn the structure of a program into a doubly
+linked list or a dynamic array   
+
+?, : makes it that the default number of the * and / operation is the number
+entered
+
+?. should be sillier 
 
 
 

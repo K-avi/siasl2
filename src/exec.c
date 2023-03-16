@@ -65,11 +65,63 @@ int exec_prgm( instruction* program, CELLMATRIX* environment, S_STACK* stack) {
       
       /*new predefined operations */
 
-      case (INT_LEFT<<4)| INT_LEFT: idx=0;  break; //goes to first square
+      /* movement operations */
 
-      case (INT_MULT <<4) | INT_MULT :environment->mat[idx]*=environment->mat[idx]; break;
+      case (INT_DOWN<<4)| INT_DOWN: idx=0;  break; //goes to first cell 
+      case (INT_UP<<4)| INT_UP : idx=(environment->size*environment->size)-1;  break; //goes to last cell 
 
-            
+      case (INT_LEFT<<4)| INT_LEFT :  break; //goes to first cell in line
+      case (INT_RIGHT<<4)| INT_RIGHT :  break; //goes to last cell in line 
+
+      /* arithmetic primites ; stores in the current cell the result of :
+      curvalue= curvalue (airthmetic op) (movement op)->value
+
+      for exemple: 
+
+      +< stores in the current cell the value of mat[idx]+ mat[OP_RIGHT(idx, matsize)]
+      v* stores in the current cell the value of mat[idx] * mat[OP_DOWN(idx, matsize)]
+      */
+      case INT_RIGHT | (INT_PLUS<<4) : environment->mat[idx]+=environment->mat[OP_RIGHT(idx, matsize)]; break;
+      case INT_LEFT | (INT_PLUS<<4) : environment->mat[idx]+=environment->mat[OP_LEFT(idx, matsize)]; break;
+      case INT_UP | (INT_PLUS<<4) : environment->mat[idx]+=environment->mat[OP_UP(idx, matsize)]; break;
+      case INT_DOWN | (INT_PLUS<<4) : environment->mat[idx]+=environment->mat[OP_DOWN(idx, matsize)]; break;
+
+
+      case INT_RIGHT | (INT_MINUS<<4) : environment->mat[idx]-=environment->mat[OP_RIGHT(idx, matsize)]; break;
+      case INT_LEFT | (INT_MINUS<<4) : environment->mat[idx]-=environment->mat[OP_LEFT(idx, matsize)]; break;
+      case INT_UP | (INT_MINUS<<4) : environment->mat[idx]-=environment->mat[OP_UP(idx, matsize)]; break;
+      case INT_DOWN | (INT_MINUS<<4) : environment->mat[idx]-=environment->mat[OP_DOWN(idx, matsize)]; break;
+
+      case INT_RIGHT | (INT_MULT<<4) : environment->mat[idx]*=environment->mat[OP_RIGHT(idx, matsize)]; break;
+      case INT_LEFT | (INT_MULT<<4) : environment->mat[idx]*=environment->mat[OP_LEFT(idx, matsize)]; break;
+      case INT_UP | (INT_MULT<<4) : environment->mat[idx]*=environment->mat[OP_UP(idx, matsize)]; break;
+      case INT_DOWN | (INT_MULT<<4) : environment->mat[idx]*=environment->mat[OP_DOWN(idx, matsize)]; break;
+
+      case INT_RIGHT | (INT_DIV<<4) : if(environment->mat[OP_RIGHT(idx,matsize)] ) environment->mat[idx]/=environment->mat[OP_RIGHT(idx, matsize)]; break;
+      case INT_LEFT | (INT_DIV<<4) : if(environment->mat[OP_LEFT(idx,matsize)] ) environment->mat[idx]/=environment->mat[OP_LEFT(idx, matsize)]; break;
+      case INT_UP | (INT_DIV<<4) : if(environment->mat[OP_UP(idx,matsize)] ) environment->mat[idx]/=environment->mat[OP_UP(idx, matsize)]; break;
+      case INT_DOWN | (INT_DIV<<4) : if(environment->mat[OP_DOWN(idx,matsize)] ) environment->mat[idx]/=environment->mat[OP_DOWN(idx, matsize)]; break;
+
+      /* arithmetic stuff */
+
+      case (INT_MULT <<4) | INT_MULT :environment->mat[idx]*=environment->mat[idx]; break; //square operation 
+      case (INT_DIV <<4) | INT_DIV : environment->mat[idx]= 1; break; //square operation 
+      case (INT_PLUS <<4) | INT_PLUS : environment->mat[idx]*=2; break; //square operation 
+      case (INT_MINUS <<4) | INT_MINUS: environment->mat[idx]=0; break; //square operation 
+
+
+      /* print formats */
+
+      case (INT_PRINT<<4) | INT_PLUS: printf("%d", environment->mat[idx]); break;
+      case (INT_PRINT<<4) | INT_MINUS: printf("%x", environment->mat[idx]); break;
+      case (INT_PRINT<<4) | INT_MULT: printf("%o", environment->mat[idx]); break;
+      case (INT_PRINT<<4) | INT_DIV: printf("%u", environment->mat[idx]); break;
+      case INT_PRINT | (INT_WILDCARD <<4)  : printf("%.2f", (float) environment->mat[idx]); break;
+
+      /* silly wildcard stuff */
+
+      /* not done yet */
+
         default: 
          break;
     }
