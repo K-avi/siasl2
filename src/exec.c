@@ -6,6 +6,8 @@
 #include <stdlib.h>
 
 
+int default_mult_div=2;
+
 int exec_prgm( instruction* program, CELLMATRIX* environment, S_STACK* stack) {
 
   if(! (program && environment && stack)) return -1;
@@ -41,9 +43,9 @@ int exec_prgm( instruction* program, CELLMATRIX* environment, S_STACK* stack) {
 
         case(INT_MINUS <<4) | INT_NEUT: environment->mat[idx]--; break;
 
-        case (INT_MULT <<4) | INT_NEUT :environment->mat[idx]*=2; break;
+        case (INT_MULT <<4) | INT_NEUT :environment->mat[idx]*=default_mult_div; break;
 
-        case (INT_DIV <<4) | INT_NEUT: environment->mat[idx]/=2; break;
+        case (INT_DIV <<4) | INT_NEUT: environment->mat[idx]/=default_mult_div; break;
 
         case (INT_READ<<4 )| INT_NEUT : environment->mat[idx]=getchar(); break;
 
@@ -118,7 +120,11 @@ int exec_prgm( instruction* program, CELLMATRIX* environment, S_STACK* stack) {
       case (INT_PRINT<<4) | INT_DIV: printf("%u", environment->mat[idx]); break;
       case INT_PRINT | (INT_WILDCARD <<4)  : printf("%.2f", (float) environment->mat[idx]); break;
 
+      /* loop variations */
+
       /* silly wildcard stuff */
+
+      case (INT_WILDCARD<<4) | INT_READ : default_mult_div= getchar(); break;
 
       /* not done yet */
 
