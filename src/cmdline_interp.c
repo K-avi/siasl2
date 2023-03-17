@@ -32,14 +32,14 @@ char hexTObf( char hexChr ){
       case 'b' : return '.'; break;
       case 'c' : return '['; break;
       case 'd' : return ']'; break;
-      case 'e' : return '#'; break;
+      case 'e' : return '?'; break;
       case 'f' : return '#'; break;
 
       case 'A' : return ','; break;
       case 'B' : return '.'; break;
       case 'C' : return '['; break;
       case 'D' : return ']'; break;
-      case 'E' : return '#'; break;
+      case 'E' : return '?'; break;
       case 'F' : return '#'; break;
 
       default: return -1 ;
@@ -59,6 +59,8 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
     fflush(stdout);
 
     char lprint=1;
+
+    unsigned char syntax_err=0;
 
     printf("welcome to the SIASL interactive interpreter!\n>>> ");
     while( fgets(line, 256, stdin)){
@@ -87,7 +89,7 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
 
             yy_scan_string(line);
             progempty=0;
-            yyparse(); 
+            syntax_err= yyparse(); 
 
          }else if (mode=='x'){
             char line_translation[256]; 
@@ -101,19 +103,17 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
 
             yy_scan_string(line_translation);
             progempty=0;
-            yyparse(); 
+            syntax_err= yyparse(); 
          }
          
 
          //parsed_to_int(prog);
  
-         exec_prgm(prog, environment, stack);
-         
-         
+         if(!syntax_err) exec_prgm(prog, environment, stack);
       
-          free_instruct(prog); 
-          progempty=1;    
-          yylex_destroy();
+         free_instruct(prog); 
+         progempty=1;    
+         yylex_destroy();
 
         if(mode =='s' && strchr(line, '.')){
          printf("\n>>> ");

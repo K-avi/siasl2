@@ -1,9 +1,12 @@
 #include "exec.h"
+#include "ast.h"
+#include "cells.h"
 #include "stack.h"
 
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 int default_mult_div=2;
@@ -18,8 +21,8 @@ int exec_prgm( instruction* program, CELLMATRIX* environment, S_STACK* stack) {
  // int length= environment->size;
   int idx= environment->curindex; 
  
-  CELL *cells= environment->mat; 
-
+  
+  char safe_getchar[256]; //used in read function to pass stuff safely
  
   uint32_t matsize= environment->size* environment->size;
   while (curr) {
@@ -47,12 +50,21 @@ int exec_prgm( instruction* program, CELLMATRIX* environment, S_STACK* stack) {
 
         case (INT_DIV <<4) | INT_NEUT: environment->mat[idx]/=default_mult_div; break;
 
-        case (INT_READ<<4 )| INT_NEUT : environment->mat[idx]=getchar(); break;
+        case (INT_READ<<4 )| INT_NEUT : 
+            fflush(stdin);
+            if(fgets(safe_getchar, 255, stdin)){
+              
+            environment->mat[idx]= safe_getchar[0];
+            fflush(stdin);
+
+            memset(safe_getchar, 0, 256*sizeof(char));
+            }
+            break;
 
         case (INT_PRINT<<4) | INT_NEUT: printf("%c", environment->mat[idx]); break;
 
         case (INT_LBRACKET <<4 ) | INT_NEUT :
-            if (cells[idx] == 0) {
+            if (environment->mat[idx] == 0) {
               curr = curr->other;
             } else {
               if (stack_ptr >= STACK_SIZE) {
@@ -117,14 +129,142 @@ int exec_prgm( instruction* program, CELLMATRIX* environment, S_STACK* stack) {
       case (INT_PRINT<<4) | INT_PLUS: printf("%d", environment->mat[idx]); break;
       case (INT_PRINT<<4) | INT_MINUS: printf("%x", environment->mat[idx]); break;
       case (INT_PRINT<<4) | INT_MULT: printf("%o", environment->mat[idx]); break;
-      case (INT_PRINT<<4) | INT_DIV: printf("%u", environment->mat[idx]); break;
+      case (INT_PRINT<<4) | INT_DIV: printf("%u", (unsigned) environment->mat[idx]); break;
       case INT_PRINT | (INT_WILDCARD <<4)  : printf("%.2f", (float) environment->mat[idx]); break;
 
       /* loop variations */
 
+      /*arithmetic modes */
+      case (INT_LBRACKET <<4 ) | INT_PLUS : //increments curcell each time going on loop 
+            if (environment->mat[idx] == 0) {
+              curr = curr->other;
+            } else {
+              environment->mat[idx]++;
+              if (stack_ptr >= STACK_SIZE) {
+                  return -1; //stack overflow
+              }
+              stack->stack[stack_ptr++] = curr;
+            }
+            
+            break;
+        case (INT_RBRACKET <<4) | INT_PLUS : //increments curcell each time ending loop 
+            curr = stack->stack[--stack_ptr];
+            environment->mat[idx]++;
+            continue;
+        
+
+        case (INT_LBRACKET <<4 ) | INT_MINUS : //decrement curcell each time going in loop 
+            if (environment->mat[idx] == 0) {
+              curr = curr->other;
+            } else {
+              environment->mat[idx]--;
+              if (stack_ptr >= STACK_SIZE) {
+                  return -1; //stack overflow
+              }
+              stack->stack[stack_ptr++] = curr;
+            }
+            
+            break;
+        case (INT_RBRACKET <<4) | INT_MINUS : //decrements curcell each time finishing loop 
+            curr = stack->stack[--stack_ptr];
+            environment->mat[idx]--;
+
+            continue;
+        /*movement modes */
+        case (INT_LBRACKET <<4 ) | INT_LEFT : //goes to the left of curcell each time going in loop 
+            if (environment->mat[idx] == 0) {
+              curr = curr->other;
+              idx=OP_LEFT(idx, matsize);
+            } else {
+          
+              if (stack_ptr >= STACK_SIZE) {
+                  return -1; //stack overflow
+              }
+              stack->stack[stack_ptr++] = curr;
+              idx=OP_LEFT(idx, matsize);
+            }
+            
+            break;
+        case (INT_RBRACKET <<4) | INT_LEFT : //goes to the left of curcell each time ending loop
+            curr = stack->stack[--stack_ptr];
+          
+            idx=OP_LEFT(idx, matsize);
+            continue;
+        
+        case (INT_LBRACKET <<4 ) | INT_RIGHT: //goes to the right of curcell each time going on loop 
+            if (environment->mat[idx] == 0) {
+              curr = curr->other;
+              idx=OP_RIGHT(idx, matsize);
+            } else {
+             
+              if (stack_ptr >= STACK_SIZE) {
+                  return -1; //stack overflow
+              }
+              stack->stack[stack_ptr++] = curr;
+              idx=OP_RIGHT(idx, matsize);
+            }
+            
+            break;
+        case (INT_RBRACKET <<4) | INT_RIGHT ://goes to the right of curcell each time ending loop
+            curr = stack->stack[--stack_ptr];
+         
+            idx=OP_RIGHT(idx, matsize);
+            continue;
+        
+        case (INT_LBRACKET <<4 ) | INT_UP : //goes to up of curcell each time going on loop 
+            if (environment->mat[idx] == 0) {
+              curr = curr->other;
+              idx=OP_UP(idx, matsize);
+            } else {
+         
+              if (stack_ptr >= STACK_SIZE) {
+                  return -1; //stack overflow
+              }
+              stack->stack[stack_ptr++] = curr;
+              idx=OP_UP(idx, matsize);
+            }
+            
+            break;
+        case (INT_RBRACKET <<4) | INT_UP : //goes to up of curcell each time ending loop
+            curr = stack->stack[--stack_ptr];
+          
+            idx=OP_UP(idx, matsize);
+            continue;
+        
+        case (INT_LBRACKET <<4 ) | INT_DOWN : //goes down of curcell each time going on loop 
+            if (environment->mat[idx] == 0) {
+              curr = curr->other;
+              idx=OP_DOWN(idx, matsize);
+            } else {
+             
+              if (stack_ptr >= STACK_SIZE) {
+                  return -1; //stack overflow
+              }
+              stack->stack[stack_ptr++] = curr;
+              idx=OP_DOWN(idx, matsize);
+            }
+            
+            break;
+        case (INT_RBRACKET <<4) | INT_DOWN : //goes down of curcell each time ending loop
+            curr = stack->stack[--stack_ptr];
+    
+            idx=OP_DOWN(idx, matsize);
+            continue;
+            
       /* silly wildcard stuff */
 
-      case (INT_WILDCARD<<4) | INT_READ : default_mult_div= getchar(); break;
+      case (INT_WILDCARD<<4) | INT_READ : 
+
+            fflush(stdin);
+            if(fgets(safe_getchar, 255, stdin)){
+              
+            default_mult_div= safe_getchar[0];
+            fflush(stdin);
+
+            memset(safe_getchar, 0, 256*sizeof(char));
+            }
+          
+          break;
 
       /* not done yet */
 

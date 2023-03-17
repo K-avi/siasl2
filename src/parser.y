@@ -29,10 +29,10 @@
 %token <token> LBRACKET RBRACKET
 
 %type <instruction> program stmts stmt loop
-%type <token> syllable
+%type <token> syllable loop_mode
 %type <sym> loop_start loop_end symbol
 
-
+%destructor { free_instruct($$); } <instruction>
 
 %start program
 
@@ -63,12 +63,12 @@ loop
 ;
 
 loop_start
-  : LBRACKET NEUTRAL { $$=symbol_from_syllable( $1, $2);}
-  | NEUTRAL LBRACKET { $$=symbol_from_syllable( $1, $2);}
+  : LBRACKET loop_mode { $$=symbol_from_syllable( $1, $2);}
+  | loop_mode LBRACKET { $$=symbol_from_syllable( $1, $2);}
 
 loop_end
-  : RBRACKET NEUTRAL { $$=symbol_from_syllable( $1, $2);}
-  | NEUTRAL RBRACKET { $$=symbol_from_syllable( $1, $2);}
+  : RBRACKET loop_mode { $$=symbol_from_syllable( $1, $2);}
+  | loop_mode RBRACKET { $$=symbol_from_syllable( $1, $2);}
 
 
 symbol 
@@ -78,7 +78,15 @@ symbol
   | syllable {
     $$=symbol_from_syllable( NEUTRAL, $1);
   }
-  
+
+loop_mode 
+  : PLUS
+  | MINUS
+  | NEUTRAL 
+  | LEFT 
+  | UP 
+  | DOWN
+  | RIGHT
 
 syllable
   : PRINT

@@ -48,8 +48,9 @@ Symbol symbol_from_syllable( int tok1 , int  tok2){
 }
 
 instruction * mkinstruction( Symbol sym) {
-   // printf("in mkinstr %d %d\n", sym.token1, sym.token2);
+   
   instruction* ret = (instruction*)malloc(sizeof(instruction));
+  
   ret->symbol.token1 = sym.token1;
   ret->symbol.token2 = sym.token2;
   ret->next = NULL;
@@ -77,7 +78,7 @@ void free_instruct( instruction* parsed_prog){
     instruction* tmp= parsed_prog, *tmp1=parsed_prog;
   
     while (tmp){
-
+     
         tmp1=tmp1->next;
 
         free(tmp);
