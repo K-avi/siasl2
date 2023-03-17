@@ -39,7 +39,7 @@ SIASL :
 
         "+ " eq " +" eq "#+" eq "+#"
     
-    have a default op table and a settable table .
+    default op will be hardcoded and settable op's will be stored one way or another ig
 
 default op : 
 
@@ -118,3 +118,32 @@ by saying to bison to free stuff correctlyt
 ,? instruction causes syntax error which causes invalid read when length 
 of string passed is longer than 1 ; might or might not be important? 
 this is fixed !!!
+
+
+
+What's done for (SIASL)² 1.0 :
+
+    -a bunch of new instructions 
+    -interactive interpreter re-using SIASL code
+    -flex/bison lexer/parser based on SIASL parser
+    -support for HEX lexic (not tested)
+
+    -bugs from SIASL being fixed
+
+    what has to be done before release: 
+        
+        -the ?> and ?< tokens; they will make it possible to change the 
+         direction of the instruction pointer ; to do this I have to change 
+         the structure of instruction list from linked list to doubly-linked list 
+
+         (will have to handle loops when going backwards)
+
+        -> change instruction structure 
+        -> change mkinstr() 
+        -> change append()
+        ->hmmm
+
+        -HTML doc 
+
+
+

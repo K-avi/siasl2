@@ -97,7 +97,7 @@ int main(int argc, char ** argv){
 
     if(helpset){
 
-        printf("SIASL is a brainfuck like esolang; the options available are:\n-f to read a file\n-c to use the command line interactive interpret\n-x to use SIASL in hex mode;\n-s to use SIASL in symbol mode\nmore informations on the SIASL lang can be found in the README.txt file.\n"); 
+        printf("(SIASL)² is a brainfuck like esolang; the options available are:\n-f to read a file\n-c to use the command line interactive interpret\n-x to use SIASL in hex mode;\n-s to use SIASL in symbol mode\nmore informations on the SIASL lang can be found in the README.txt file.\n"); 
 
         exit(0);
 
@@ -123,7 +123,7 @@ int main(int argc, char ** argv){
             free_stack(stack);
         }else{
             
-            fprintf(stderr ,"mode is neiter siasl nor hexa; exiting\n");
+            fprintf(stderr ,"mode is neiter symbol nor hexa; exiting\n");
 
             free_mat(environment);
             free_stack(stack);
@@ -172,7 +172,7 @@ int main(int argc, char ** argv){
                 progempty=0;
                 fclose(yyin);
             }else{
-                fprintf(stderr ,"mode is neiter siasl nor hexa; exiting\n");
+                fprintf(stderr ,"mode is neiter symbol nor hexa; exiting\n");
 
                 free_mat(environment);
                 free_stack(stack);
