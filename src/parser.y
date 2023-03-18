@@ -30,11 +30,14 @@
 %token <token> LBRACKET RBRACKET
 
 %type <instruction> program stmts stmt loop
-%type <token> syllable loop_mode
+%type <token> syllable
 
 %type <sym> loop_start loop_end symbol
 
 %start program
+
+%expect 49
+
 
 %destructor { ; } <instruction>
 
@@ -75,32 +78,61 @@ loop
 ;
 
 loop_start
-  : LBRACKET loop_mode { $$=symbol_from_syllable( $1, $2);}
-  | loop_mode LBRACKET { $$=symbol_from_syllable( $1, $2);}
+  : LBRACKET PLUS { $$=symbol_from_syllable( $1, $2);}
+  | PLUS LBRACKET { $$=symbol_from_syllable( $1, $2);}
+  
+  | LBRACKET MINUS { $$=symbol_from_syllable( $1, $2);}
+  | MINUS LBRACKET { $$=symbol_from_syllable( $1, $2);}
+
+  | LBRACKET LEFT { $$=symbol_from_syllable( $1, $2);}
+  | LEFT LBRACKET { $$=symbol_from_syllable( $1, $2);}
+
+  | LBRACKET UP { $$=symbol_from_syllable( $1, $2);}
+  | UP LBRACKET { $$=symbol_from_syllable( $1, $2);}
+
+  | LBRACKET DOWN { $$=symbol_from_syllable( $1, $2);}
+  | DOWN LBRACKET { $$=symbol_from_syllable( $1, $2);}
+
+  | LBRACKET RIGHT { $$=symbol_from_syllable( $1, $2);}
+  | RIGHT LBRACKET { $$=symbol_from_syllable( $1, $2);}
+
+  | LBRACKET NEUTRAL { $$=symbol_from_syllable( $1, $2);}
+  | NEUTRAL LBRACKET { $$=symbol_from_syllable( $1, $2);}
+
 
 
 loop_end
-  : RBRACKET loop_mode { $$=symbol_from_syllable( $1, $2);}
-  | loop_mode RBRACKET { $$=symbol_from_syllable( $1, $2);}
+  : RBRACKET PLUS { $$=symbol_from_syllable( $1, $2);}
+  | PLUS RBRACKET { $$=symbol_from_syllable( $1, $2);}
+  
+  | RBRACKET MINUS { $$=symbol_from_syllable( $1, $2);}
+  | MINUS RBRACKET { $$=symbol_from_syllable( $1, $2);}
+
+  | RBRACKET LEFT { $$=symbol_from_syllable( $1, $2);}
+  | LEFT RBRACKET { $$=symbol_from_syllable( $1, $2);}
+
+  | RBRACKET UP { $$=symbol_from_syllable( $1, $2);}
+  | UP RBRACKET { $$=symbol_from_syllable( $1, $2);}
+
+  | RBRACKET DOWN { $$=symbol_from_syllable( $1, $2);}
+  | DOWN RBRACKET { $$=symbol_from_syllable( $1, $2);}
+
+  | RBRACKET RIGHT { $$=symbol_from_syllable( $1, $2);}
+  | RIGHT RBRACKET { $$=symbol_from_syllable( $1, $2);}
+
+  | RBRACKET NEUTRAL { $$=symbol_from_syllable( $1, $2);}
+  | NEUTRAL RBRACKET { $$=symbol_from_syllable( $1, $2);}
+
 
 
 symbol 
-  : syllable syllable %prec Ssyllable {
+  : syllable syllable  {
     $$=symbol_from_syllable( $1, $2);
   }  
   | syllable {
     $$=symbol_from_syllable( NEUTRAL, $1);
   }
 
-loop_mode 
-  : PLUS
-  | MINUS
-  | NEUTRAL 
-  | LEFT 
-  | UP 
-  | DOWN
-  | RIGHT
-;
 
 syllable
   : PRINT

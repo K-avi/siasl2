@@ -16,9 +16,9 @@ typedef struct instruction{
 
 typedef struct Double_instruction{ 
     Symbol symbol ;
-    struct Double_instruction* next; 
+    struct Double_instruction * next; 
     struct Double_instruction * prev;
-    struct Double_instruction* other;
+    struct Double_instruction * other;
 
 }dinstruction;
 
