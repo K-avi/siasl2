@@ -9,8 +9,7 @@ LEX := flex
 LFLAGS :=
 
 YACC := bison
-YFLAGS := -v -d 
-
+YFLAGS := -d -v
 SRCS := exec.c ast.c cells.c stack.c globals.c cmdline_interp.c
 
 all: $(TARGET)

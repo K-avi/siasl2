@@ -17,6 +17,7 @@
   
 %}
 
+
 %union {
   struct instruction* instruction;
   int token;
@@ -30,12 +31,12 @@
 
 %type <instruction> program stmts stmt loop
 %type <token> syllable loop_mode
-%type <sym> loop_start loop_end symbol
 
+%type <sym> loop_start loop_end symbol
 
 %start program
 
-%destructor { printf("reached destruct\n"); } <instruction>
+%destructor { ; } <instruction>
 
 %%
 
@@ -46,13 +47,13 @@ program
 stmts
   : stmt        { $$ = $1; }
   | stmts stmt  { add_instruction($$ = $1, $2); }
-  | stmts error { printf( "stmts error "); free_instruct($1) ; YYABORT; }
+  | stmts error { printf( "stmts error\n"); free_instruct($1) ; $$=NULL; YYABORT; }
 ;
 
 stmt
   : loop { $$ = $1; }
   | symbol   { $$ = mkinstruction($1); }
-  | symbol error {  printf("stmt error");  YYABORT; }
+  
 ;
 
 loop
@@ -70,11 +71,7 @@ loop
       
       $$->other->other = $$;
     }
-  | loop_start error loop_end{
-      printf("error loop");
-   
-      YYABORT;
-    }
+  
 ;
 
 loop_start
@@ -88,9 +85,9 @@ loop_end
 
 
 symbol 
-  : syllable syllable {
+  : syllable syllable %prec Ssyllable {
     $$=symbol_from_syllable( $1, $2);
-  }
+  }  
   | syllable {
     $$=symbol_from_syllable( NEUTRAL, $1);
   }
@@ -103,6 +100,7 @@ loop_mode
   | UP 
   | DOWN
   | RIGHT
+;
 
 syllable
   : PRINT
