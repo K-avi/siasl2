@@ -13,6 +13,21 @@ typedef struct instruction{
 
 }instruction;
 
+
+typedef struct Double_instruction{ 
+    Symbol symbol ;
+    struct Double_instruction* next; 
+    struct Double_instruction * prev;
+    struct Double_instruction* other;
+
+}dinstruction;
+
+typedef struct prog{
+    dinstruction * head; 
+    dinstruction * tail;
+}program;
+
+
 extern void free_instruct( instruction* parsed_prog);
 
 extern  int parsed_to_int( instruction * parsed_prog);

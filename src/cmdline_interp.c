@@ -62,7 +62,7 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
 
     unsigned char syntax_err=0;
 
-    printf("welcome to the SIASL interactive interpreter!\n>>> ");
+    printf("welcome to the (SIASL)² interactive interpreter!\n>>> ");
     while( fgets(line, 256, stdin)){
 
          
@@ -109,9 +109,10 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
 
          //parsed_to_int(prog);
  
-         if(!syntax_err) exec_prgm(prog, environment, stack);
-      
-         free_instruct(prog); 
+         if(!syntax_err) {
+            exec_prgm(prog, environment, stack);
+            free_instruct(prog);
+         }
          progempty=1;    
          yylex_destroy();
 

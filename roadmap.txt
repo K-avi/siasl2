@@ -146,4 +146,8 @@ What's done for (SIASL)² 1.0 :
         -HTML doc 
 
 
+new program structure written ; not tested yet ; gonna see if everything works w it 
+and then implement the 
+?> and ?< operators (really looking forward to implementing them ; they're really fun) 
+; will have to write somewhere their idea comes from brainflex 
 

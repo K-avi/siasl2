@@ -111,7 +111,7 @@ int parsed_to_int( instruction * parsed_prog){
         curr=curr->next; 
     }
     return 1; //returns OK
-}//not tested
+}//works; obsolete
 
 
 char token_to_char(int token){
@@ -149,3 +149,80 @@ void printprgm( instruction * prgm){
 }
 
 
+
+////// new implementation of program ;/////
+
+dinstruction * mkDinstruction( Symbol sym){
+    dinstruction * ret = (dinstruction*) malloc(sizeof(dinstruction));
+
+    ret->symbol=sym;
+    ret->next=NULL;
+    ret->prev=NULL; 
+
+    ret->other=NULL;
+
+    return ret;
+}//not tested
+
+program* initProg(){
+    program * ret= (program*) malloc(sizeof(program));
+
+    ret->head=NULL; 
+    ret->tail=NULL;
+
+    return ret;
+}//not tested 
+
+void insertHead( program * prog,  dinstruction * newH){
+    if(! (newH && prog) ) return;
+    newH->next= prog->head;
+    newH->prev=NULL;
+
+    if((prog->head)){
+       prog->head->prev=newH;
+    }else{
+        
+    }
+    prog->head=newH;
+}//not tested 
+
+void insertTail( program * prog, dinstruction * newT){
+    
+    if(! (newT && prog) ) return;
+    newT->next=NULL;
+
+    if(!(prog->head)){
+        newT->prev=NULL;
+        prog->head=newT;
+    }else{
+        prog->tail->next=newT;
+    }
+    prog->tail=newT;
+
+}//not tested
+
+void free_prog (program * prog){
+    if(!prog) return;
+
+    dinstruction * tmp1= prog->head, * tmp2=prog->head;
+
+    while(tmp1){
+        tmp2=tmp2->next; 
+        free(tmp1);
+
+        tmp1=tmp2;
+    }
+
+    free(prog);
+}//not tested 
+
+void Dprintprgm( program* prgm){
+
+    dinstruction * cur=prgm->head; 
+
+    while(cur){
+        printf("%c%c", token_to_char(cur->symbol.token1), token_to_char(cur->symbol.token2) );
+        cur=cur->next;
+    }
+    printf("\n");
+}//not tested

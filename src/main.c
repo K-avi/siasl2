@@ -5,7 +5,6 @@
 #include "stack.h"
 #include "globals.h"
 
-
 #include "lex.yy.h"
 #include "parser.tab.h"
 

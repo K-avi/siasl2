@@ -32,9 +32,10 @@
 %type <token> syllable loop_mode
 %type <sym> loop_start loop_end symbol
 
-%destructor { free_instruct($$); } <instruction>
 
 %start program
+
+%destructor { printf("reached destruct\n"); } <instruction>
 
 %%
 
@@ -45,11 +46,13 @@ program
 stmts
   : stmt        { $$ = $1; }
   | stmts stmt  { add_instruction($$ = $1, $2); }
+  | stmts error { printf( "stmts error "); free_instruct($1) ; YYABORT; }
 ;
 
 stmt
   : loop { $$ = $1; }
   | symbol   { $$ = mkinstruction($1); }
+  | symbol error {  printf("stmt error");  YYABORT; }
 ;
 
 loop
@@ -60,11 +63,24 @@ loop
       add_instruction($$->next, $$->other);
       $$->other->other = $$;
     }
+  | loop_start loop_end{
+      $$ = mkinstruction($1);
+      $$->next = mkinstruction($2);
+      $$->other = $$->next;
+      
+      $$->other->other = $$;
+    }
+  | loop_start error loop_end{
+      printf("error loop");
+   
+      YYABORT;
+    }
 ;
 
 loop_start
   : LBRACKET loop_mode { $$=symbol_from_syllable( $1, $2);}
   | loop_mode LBRACKET { $$=symbol_from_syllable( $1, $2);}
+
 
 loop_end
   : RBRACKET loop_mode { $$=symbol_from_syllable( $1, $2);}
@@ -109,5 +125,6 @@ syllable
 
 
 void yyerror(const char* s) {
+
   fprintf(stderr, "yyerr: %s\n", s);
 }
