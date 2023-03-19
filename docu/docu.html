@@ -447,7 +447,7 @@
                         <tr>
                             <td style="text-align:center"><code>?&gt;</code></td>
                             <td>
-                                This instruction sets the sense of the execution of the 
+                                This instruction sets the flow of the execution of the 
                                 program from the right to the left. 
                                 The way this is implemented is that when given a program
                                 the interpreter will execute the current instruction then the 
@@ -460,15 +460,16 @@
                         <tr>
                             <td style="text-align:center"><code>?&lt;</code></td>
                             <td>
-                                This instruction sets the sense of the execution of the 
+                                This instruction sets the flow of the execution of the 
                                 program from the left to the right. 
                                 The way this is implemented is that when given a program
                                 the interpreter will execute the current instruction then the 
                                 "previous" one until it reaches the beginning of the program. 
                                 ie: it will read the program from left to right and stop 
                                 at the beginning. 
-
                                 NB: this can be used at the end of a program to execute it again "backwards"
+                                NB: in the interactive interpreter; the flow of execution is reset to default 
+                                after each line evaluated.
                             </td>
                         </tr>
                         <tr>
