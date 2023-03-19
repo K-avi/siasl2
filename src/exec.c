@@ -10,11 +10,10 @@
 
 
 int default_mult_div=2;
-
 int exec_direction= 1 ; //used when changing sense of execution from "right to left" to "left to right"
 //modified when calling the "?>" and "?<" symbols.
 
-#define OP_EXEC(progr, dir) if ( (dir) ){ (progr)= (progr)->next ;} else{ (progr)= (progr)->prev ;}
+#define OP_EXEC(progr, dir) if((dir)){ (progr)= (progr)->next ;} else{ (progr)= (progr)->prev ;}
 
 int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack) {
 
@@ -33,7 +32,7 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack) {
   while (curr) {
     
     unsigned short instruction = curr->symbol.token1 | ((curr->symbol.token2)<<4);
-  //printf("%u %u %b\n",curr->symbol.token1 , curr->symbol.token2 ,instruction );
+
     switch (instruction) {
 
       /* default operations; the one that already are in SIASL */

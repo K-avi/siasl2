@@ -38,6 +38,7 @@
                                 <a href="#p1" class="text-justify">
                                     I: Introduction
                                 </a>
+                               
                             </li>
                             <li>
                                 <a href="#p2">
@@ -46,17 +47,7 @@
                                 <ul>
                                     <li>
                                         <a href="#p21">
-                                        1:  
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#p22">
-                                        2: 
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#p23">
-                                        3: 
+                                        1:  how is the (SIASL)² environment represented?
                                         </a>
                                     </li>
                                                                    
@@ -69,7 +60,7 @@
                                 <ul>
                                     <li>
                                         <a href="#p31">
-                                        1:  
+                                        1: 
                                         </a>
                                     </li>
                                     <li>
@@ -118,6 +109,28 @@
                I: Introduction:
             </u>
             </h2>
+            <p>
+                (SIASL)² is an <a href=https://esolangs.org/wiki/Esoteric_programming_language>Esolang</a>
+                It belongs to <a href="https://esolangs.org/wiki/Turing_tarpit">Turing tarpit</a> family of languages.
+                and takes inspiration to the most famous one <a href=" https://esolangs.org/wiki/Brainfuck">Brainfuck</a>.
+                The most simple way to descripe it would be as some sort of 2d <a href=" https://esolangs.org/wiki/Brainfuck">Brainfuck</a>.
+                see <a href="https://esolangs.org/wiki/Generic_2D_Brainfuck">Generic 2D Brainfuck</a> and <a href="https://esolangs.org/wiki/2DFuck">2DFuck</a>
+                for reference.
+
+                the name SIASL stands for Siasl Is a Silly Language (very good name). The ()² part comes from the fact that 
+                each (SIASL)² instruction is two <a href="https://github.com/K-avi/siasl">SIASL</a> instruction (SIASL is the language 
+                I made before making this one and was a way for me to learn a few stuff before doing (SIASL)² ).
+
+                The main thing differentiating (SIASL)² from these languages is that a (SIASL)² instruction is a combination of two characters instead of one. 
+
+                (check out parts <a href=#p3>III</a> and <a href=#p3>IV</a> for more details).
+
+                Crucially (SIASL)² instructions are commutative; which means that "+#" is the exact same thing as "#+" 
+                which limits the amount of instructions that can be created in (SIASL)² but makes it (in my opinion)
+                easier to use.
+        
+
+            </p>
             <br/>
             <p class="text-left">
                
@@ -130,7 +143,7 @@
         <div id="p2">
             <h2>
             <u>
-                II: 
+                II: Environment
             </u>
             </h2>
             <br/>
@@ -138,37 +151,23 @@
             <div id="p21">
                 <h4>
                 <em>
-                    II.1: 
+                    II.1: how is the (SIASL)² environment represented?
                 </em>
                 </h4>
                 <p class="text-left">
-                    
+                    similarly to brainfuck ; (SIASL)² operates on memory cell. However they take the form 
+                    of a square matrix instead of a simple array ; allowing for movement in 4 directions instead of two. 
+                    ( < , > , v , ^ ) related operations.
+
+                    Each cell contains a signed integer. It's value can be modifier by a lot of different operations. 
+
+                    When reaching the end of a "line" and trying to go to the right the data pointer will be move to the next one. 
+                    Similar behavior occurs when reaching the start and trying to go to the left or when reaching the 
+
+                    first/last line of the matrix and going up or down.
                 </p>
             </div>
 
-            <div id="p22">
-                <h4>
-                <em>
-                    II.2: 
-                </em>
-                </h4>
-                <p class="text-left">
-                   
-                </p>
-            </div>
-            <div id="p23">
-                <h4>
-                <em>
-                    II.3: 
-                </em>
-                </h4>
-                <p class="text-left">
-                 
-                </p>
-            
-            
-            </div>
-        
         </div>
 
         <br/>
@@ -178,43 +177,174 @@
         <div id="p3">
             <h2>
             <u>
-                III: 
+                III: Preset instructions
             </u>
             </h2>
             <br/>
 
+            <p>
+                (SIASL)² supports a lot of predefined instruction with different effects. It is 
+                important to understand that (SIASL)² instruction are commutative. Thus 
+                will always <code>v&sharp;</code> do the exact same thing as <code>&sharp;v</code>
+                The behavior of these instruction cannot be changed.
+            </p>
+            
             <div id="p31">
-                <h4>
-                <em>
-                    III.1: 
-                </em>
-                </h4>
-                <p class="text-left">
-                    
-                </p>
-            </div>
 
-            <div id="p32">
                 <h4>
-                <em>
-                    III.2: 
-                </em>
+                    <em>
+                        III.1: default instructions 
+                    </em>
+                    
                 </h4>
-                <p class="text-left">
-                   
+                <p>
+                    instruction containing a <code>&sharp;</code> are very similar to traditionnal Brainfuck instruction. 
+                    They are simple and straightforward operations. I call them the "default" family of instruction 
+
                 </p>
-            </div>
-            <div id="p33">
-                <h4>
-                <em>
-                    III.3: 
-                </em>
-                </h4>
-                <p class="text-left">
-                 
-                </p>
-            
-            
+              
+                <table class="table table-bordered table-light">
+                    <tbody>
+                        <tr>
+                            <th>
+                                Command
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">
+                                <code>&gt;&sharp;</code>
+                            </td>
+
+                            <td>
+                                Move the pointer to the right
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">
+                                <code>&lt;&sharp;</code>
+                            </td>
+
+                            <td>
+                                Move the pointer to the left
+                            </td>
+                            
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">
+                                <code>v&sharp;</code>
+                            </td>
+
+                            <td>
+                                Move the pointer downwards
+                            </td>
+                            
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">
+                                <code>^&sharp;</code>
+                            </td>
+
+                            <td>
+                                Move the pointer upwards
+                            </td>
+                            
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">
+                                <code>+&sharp;</code>
+                            </td>
+
+                            <td>
+                               increments the cell under the pointer
+                            </td>
+                            
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">
+                                <code>-&sharp;</code>
+                            </td>
+
+                            <td>
+                               decrements the cell under the pointer
+                            </td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center">
+                                <code>.&sharp;</code>
+                            </td>
+
+                            <td>
+                                prints the value stored at the current cell as a character
+                            </td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center">
+                                <code>,&sharp;</code>
+                            </td>
+
+                            <td>
+                                reads a character from stdin and stores it's ASCII value in the current cell
+                            </td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center">
+                                <code>[&sharp;</code>
+                            </td>
+
+                            <td>
+                                Jump past the matching <code>]&sharp;</code> if the cell at the pointer is 0 
+                            </td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center">
+                                <code>]&sharp;</code>
+                            </td>
+
+                            <td>
+                                Jump back to the matching <code>[&sharp;</code> if the cell at the pointer is nonzero
+                            </td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center">
+                                <code>*&sharp;</code>
+                            </td>
+
+                            <td>
+                               multiply the cell under the pointer by the current mult/div value 
+                               (default 2)
+                            </td>
+                            
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">
+                                <code>/&sharp;</code>
+                            </td>
+
+                            <td>
+                               sets the cell under the pointer to the result the integer division 
+                               between it's value and the current mult/div value 
+                               (default 2)
+                            </td>
+                            
+                        </tr>
+                        
+                    </tbody>
+                </table>
+                            
+                  
             </div>
         
         </div>

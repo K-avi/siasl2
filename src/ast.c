@@ -7,14 +7,12 @@ void free_instruct ( instruction * instruct){
     if(!instruct) return;
 
     instruction * tmp1= instruct, * tmp2=instruct;
-
     while(tmp1){
         tmp2=tmp2->next; 
         free(tmp1);
 
         tmp1=tmp2;
     }
-
 }//not tested 
 
 
@@ -86,9 +84,9 @@ char token_to_char(int token){
     return '?';
 }
 
-////// new implementation of program ;/////
-
 instruction * mkinstruction( Symbol sym){
+    /*
+    */
     instruction * ret = (instruction*) malloc(sizeof(instruction));
 
     ret->symbol=sym;
@@ -98,18 +96,24 @@ instruction * mkinstruction( Symbol sym){
     ret->other=NULL;
 
     return ret;
-}//not tested
+}
 
 program* initProg(){
+    /*
+    called once at start of exec
+    */
     program * ret= (program*) malloc(sizeof(program));
 
     ret->head=NULL; 
     ret->tail=NULL;
 
     return ret;
-}//not tested 
+}
 
 void insertHead( program * prog,  instruction * newH){
+    /*
+    not used atm; might be relevant later?
+    */
     if(! (newH && prog) ) return;
     newH->next= prog->head;
     newH->prev=NULL;
@@ -123,7 +127,9 @@ void insertHead( program * prog,  instruction * newH){
 }//not tested 
 
 void insertTail( program * prog, instruction * newT){
-    
+    /*
+    not used atm ; might be relevant later?
+    */
     if(! (newT && prog) ) return;
     newT->next=NULL;
 
@@ -138,6 +144,8 @@ void insertTail( program * prog, instruction * newT){
 }//not tested
 
 void free_prog (program * prog){
+    /*
+    */
     if(!prog) return;
 
     instruction * tmp1= prog->head, * tmp2=prog->head;
@@ -150,11 +158,18 @@ void free_prog (program * prog){
     }
 
     free(prog);
-}//not tested 
+}//tested; works
 
 
 void printprgm( program* prgm){
+    /*
+    not used in prog but usefull when debugging
+    */
+    if(!prgm){
 
+        printf("empty prog\n");
+        return ;
+    }
     instruction * cur=prgm->head; 
 
     while(cur){
@@ -168,6 +183,7 @@ void printprgm( program* prgm){
 void mergeInstruction( instruction * list1, instruction * list2){
     /*
     adds list2 to the end of list1 
+    used in parser
     */
     if (! (list1 && list2)) return;
 
@@ -179,14 +195,15 @@ void mergeInstruction( instruction * list1, instruction * list2){
 
     tmp->next=list2; 
     list2->prev= tmp;
-}//not tested 
+}//tested; works
 
 
 void progMerge (program * prog, instruction * list){
     /*
-    different cases : prog is empty; 
-
-    prog has one or more elements ? 
+    used in parser ; works ; appends list to the tail of prog and sets it's new tail 
+    to the end of list
+    different cases : prog is empty or 
+    prog has one or more elements 
     */
     if(! (prog && list)) return;
 
@@ -216,4 +233,4 @@ void progMerge (program * prog, instruction * list){
         prog->tail=tmp;
     }
     
-}//not tested
+}//tested; seems ok
