@@ -55,22 +55,34 @@
                             </li>
                             <li>
                                 <a href="#p3">
-                                    III: Default instructions 
+                                    III: Preset instructions
                                 </a>
                                 <ul>
                                     <li>
                                         <a href="#p31">
-                                        1: 
+                                        1: Default Instructions
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#p32">
-                                        2: 
+                                        2: Arithmetic Instructions
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#p33">
+                                        3: Loop Variations
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#p33">
-                                        3: 
+                                        <a href="#p34">
+                                        4: Meta Instructions
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#p35">
+                                        5: Misc Instructions
                                         </a>
                                     </li>
                                                                    
@@ -80,24 +92,7 @@
                                 <a href="#p4">
                                     IV: Settable instructions 
                                 </a>
-                                <ul>
-                                    <li>
-                                        <a href="#p41">
-                                        1:  
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#p42">
-                                        2: 
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#p43">
-                                        3: 
-                                        </a>
-                                    </li>
-                                                                   
-                                </ul>
+                                
                             </li>
                         </ul>                
             </div>
@@ -185,154 +180,76 @@
             <p>
                 (SIASL)² supports a lot of predefined instruction with different effects. It is 
                 important to understand that (SIASL)² instruction are commutative. Thus 
-                will always <code>v&sharp;</code> do the exact same thing as <code>&sharp;v</code>
-                The behavior of these instruction cannot be changed.
+                <code>v&sharp;</code> will always do the exact same thing as <code>&sharp;v</code>
+                NB: The behavior of preset instruction cannot be changed.
             </p>
             
             <div id="p31">
 
-                <h4>
-                    <em>
-                        III.1: default instructions 
-                    </em>
-                    
-                </h4>
+                <h4> <em> III.1: default instructions </em> </h4>
                 <p>
                     instruction containing a <code>&sharp;</code> are very similar to traditionnal Brainfuck instruction. 
                     They are simple and straightforward operations. I call them the "default" family of instruction 
-
-                </p>
-              
+                </p> 
                 <table class="table table-bordered table-light">
                     <tbody>
                         <tr>
-                            <th>
-                                Command
-                            </th>
-                            <th>
-                                Description
-                            </th>
+                            <th>Command</th>
+                            <th>Description</th>
                         </tr>
                         <tr>
-                            <td style="text-align:center">
-                                <code>&gt;&sharp;</code>
-                            </td>
-
-                            <td>
-                                Move the pointer to the right
-                            </td>
+                            <td style="text-align:center"><code>&gt;&sharp;</code></td>
+                            <td> Move the pointer to the right</td>
                         </tr>
                         <tr>
-                            <td style="text-align:center">
-                                <code>&lt;&sharp;</code>
-                            </td>
+                            <td style="text-align:center"> <code>&lt;&sharp;</code></td>
+                            <td>Move the pointer to the left</td>  
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>v&sharp;</code></td>
+                            <td>Move the pointer downwards</td> 
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>^&sharp;</code> </td>
+                            <td>Move the pointer upwards</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>+&sharp;</code></td>
+                            <td>increments the cell under the pointer</td>  
 
-                            <td>
-                                Move the pointer to the left
-                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>-&sharp;</code></td>
+                            <td>decrements the cell under the pointer </td>  
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>.&sharp;</code></td>
+                            <td>prints the value stored at the current cell as a character</td>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center"><code>,&sharp;</code></td>
+                            <td>reads a character from stdin and stores it's ASCII value in the current cell</td>          
+
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center"><code>[&sharp;</code></td>
+                            <td>Jump past the matching <code>]&sharp;</code> if the cell at the pointer is 0 </td>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center"><code>]&sharp;</code></td>
+                            <td>Jump back to the matching <code>[&sharp;</code> if the cell at the pointer is nonzero</td>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center"><code>*&sharp;</code></td>
+                            <td>multiply the cell under the pointer by the current mult/div value (default 2)</td>
                             
                         </tr>
                         <tr>
-                            <td style="text-align:center">
-                                <code>v&sharp;</code>
-                            </td>
-
-                            <td>
-                                Move the pointer downwards
-                            </td>
-                            
-                        </tr>
-                        <tr>
-                            <td style="text-align:center">
-                                <code>^&sharp;</code>
-                            </td>
-
-                            <td>
-                                Move the pointer upwards
-                            </td>
-                            
-                        </tr>
-                        <tr>
-                            <td style="text-align:center">
-                                <code>+&sharp;</code>
-                            </td>
-
-                            <td>
-                               increments the cell under the pointer
-                            </td>
-                            
-                        </tr>
-                        <tr>
-                            <td style="text-align:center">
-                                <code>-&sharp;</code>
-                            </td>
-
-                            <td>
-                               decrements the cell under the pointer
-                            </td>
-                            
-                        </tr>
-
-                        <tr>
-                            <td style="text-align:center">
-                                <code>.&sharp;</code>
-                            </td>
-
-                            <td>
-                                prints the value stored at the current cell as a character
-                            </td>
-                            
-                        </tr>
-
-                        <tr>
-                            <td style="text-align:center">
-                                <code>,&sharp;</code>
-                            </td>
-
-                            <td>
-                                reads a character from stdin and stores it's ASCII value in the current cell
-                            </td>
-                            
-                        </tr>
-
-                        <tr>
-                            <td style="text-align:center">
-                                <code>[&sharp;</code>
-                            </td>
-
-                            <td>
-                                Jump past the matching <code>]&sharp;</code> if the cell at the pointer is 0 
-                            </td>
-                            
-                        </tr>
-
-                        <tr>
-                            <td style="text-align:center">
-                                <code>]&sharp;</code>
-                            </td>
-
-                            <td>
-                                Jump back to the matching <code>[&sharp;</code> if the cell at the pointer is nonzero
-                            </td>
-                            
-                        </tr>
-
-                        <tr>
-                            <td style="text-align:center">
-                                <code>*&sharp;</code>
-                            </td>
-
-                            <td>
-                               multiply the cell under the pointer by the current mult/div value 
-                               (default 2)
-                            </td>
-                            
-                        </tr>
-                        <tr>
-                            <td style="text-align:center">
-                                <code>/&sharp;</code>
-                            </td>
-
+                            <td style="text-align:center"><code>/&sharp;</code></td>
                             <td>
                                sets the cell under the pointer to the result the integer division 
                                between it's value and the current mult/div value 
@@ -342,11 +259,444 @@
                         </tr>
                         
                     </tbody>
-                </table>
-                            
-                  
+                </table>  
             </div>
-        
+
+            <div id="p32">
+                <h4> <em> III.2: Arithmetic instructions </em> </h4>
+                <p>
+                    (SIASL)² supports a number of instructions that are variations on the defaults
+                    <code>*&sharp;</code>  <code>+&sharp;</code>  <code>-&sharp;</code> and  <code>/&sharp;</code> 
+                    instructions.
+                </p> 
+                <table class="table table-bordered table-light">
+                    <tbody>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>&gt;+</code></td>
+                            <td>
+                                adds the value stored in the current cell to 
+                                the one in the cell on the right and stores it 
+                                in the current cell
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>&lt;+</code></td>
+                            <td>
+                                adds the value stored in the current cell to 
+                                the one in the cell on the left and stores it 
+                                in the current cell
+                            </td>  
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>v+</code></td>
+                            <td>
+                                adds the value stored in the current cell to 
+                                the one in the cell downwards and stores it 
+                                in the current cell
+                            </td>  
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>^+</code></td>
+                            <td>
+                                adds the value stored in the current cell to 
+                                the one in the cell upwards and stores it 
+                                in the current cell
+                            </td>  
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center"><code>&gt;-</code></td>
+                            <td>
+                                substracts the value stored in the cell on the right 
+                                from the one in the current cell and stores it in the 
+                                current cell
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>&lt;-</code></td>
+                            <td>
+                                substracts the value stored in the cell on the left 
+                                from the one in the current cell and stores it in the 
+                                current cell
+                            </td>  
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>v-</code></td>
+                            <td>
+                                substracts the value stored in the downwards
+                                from the one in the current cell and stores it in the 
+                                current cell
+                            </td>  
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>^-</code></td>
+                            <td>
+                                substracts the value stored in the cell upwards 
+                                from the one in the current cell and stores it in the 
+                                current cell
+                            </td>  
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center"><code>&gt;*</code></td>
+                            <td>
+                                multiplies the value stored in the current cell with 
+                                the one stored in the cell on it's right and 
+                                stores it in the current cell
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>&lt;*</code></td>
+                            <td>
+                                multiplies the value stored in the current cell with 
+                                the one stored in the cell on it's left and 
+                                stores it in the current cell
+                            </td>  
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>v*</code></td>
+                            <td>
+                                multiplies the value stored in the current cell with 
+                                the one downwards and 
+                                stores it in the current cell
+                            </td>  
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>^*</code></td>
+                            <td>
+                                multiplies the value stored in the current cell with 
+                                the one upwards and 
+                                stores it in the current cell
+                            </td>  
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center"><code>&gt;/</code></td>
+                            <td>
+                               calculates the result of the integer division of the value stored in 
+                               the current cell by the one stored in the cell on it's right and 
+                               stores it in the current cell.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>&lt;/</code></td>
+                            <td>
+                            calculates the result of the integer division of the value stored in 
+                               the current cell by the one stored in the cell on it's left and 
+                               stores it in the current cell.
+                            </td>  
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>v/</code></td>
+                            <td>
+                               calculates the result of the integer division of the value stored in 
+                               the current cell by the one stored in the cell downwards and 
+                               stores it in the current cell.
+                            </td>  
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>^/</code></td>
+                            <td>
+                               calculates the result of the integer division of the value stored in 
+                               the current cell by the one stored in the cell upwards and 
+                               stores it in the current cell.
+                            </td>  
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center"><code>++</code></td>
+                            <td>
+                               sums the value stored in the current cell with itself and stores it 
+                               in the current cell (multiplies it by two)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>--</code></td>
+                            <td>
+                               substracts the value stored in the current cell from itself 
+                               and stores it in the current cell (sets it to zero)
+                            </td>  
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>**</code></td>
+                            <td>
+                               multiplies the value stored in the current cell by itself 
+                               and stores it in the current cell (sets it to it's square)
+                            </td>  
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"> <code>//</code></td>
+                            <td>
+                                divides the value stored in the current cell with itself and 
+                                stores it in the current cell (sets it to one)
+                            </td>  
+                        </tr>   
+                    </tbody>
+                </table>  
+            </div>
+
+            <div id="p33">
+
+                <h4> <em> III.3: Loop Variations </em> </h4>
+                <p>
+                    (SIASL)² supports a number of instructions that are variations on the defaults
+                    <code>[&sharp;</code> and <code>&sharp;]</code>
+                    instructions.
+                </p> 
+                <table class="table table-bordered table-light">
+                    <tbody>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>[+</code></td>
+                            <td>
+                               at the beginning of each execution of the loop;
+                               increments the value of the current cell.  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>+]</code></td>
+                            <td>
+                               at the end of each execution of the loop;
+                               increments the value of the current cell.  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>[-</code></td>
+                            <td>
+                               at the beginning of each execution of the loop;
+                               decrements the value of the current cell.  
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td style="text-align:center"><code>-]</code></td>
+                            <td>
+                               at the end of each execution of the loop;
+                               decrements the value of the current cell.  
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td style="text-align:center"><code>[&gt;</code></td>
+                            <td>
+                               at the beginning of each execution of the loop;
+                               moves the cell pointer to the right.  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>&gt;]</code></td>
+                            <td>
+                               at the end of each execution of the loop;
+                               moves the cell pointer to the right.  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>[&lt;</code></td>
+                            <td>
+                               at the beginning of each execution of the loop;
+                               moves the cell pointer to the left.  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>&lt;]</code></td>
+                            <td>
+                               at the end of each execution of the loop;
+                               moves the cell pointer to the left.  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>[v</code></td>
+                            <td>
+                               at the beginning of each execution of the loop;
+                               moves the cell pointer downwards.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>v]</code></td>
+                            <td>
+                               at the end of each execution of the loop;
+                               moves the cell pointer downwards.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>[^</code></td>
+                            <td>
+                               at the beginning of each execution of the loop;
+                               moves the cell pointer upwards.  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>^]</code></td>
+                            <td>
+                               at the end of each execution of the loop;
+                               moves the cell pointer upwards.  
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="p34">
+
+                <h4> <em> III.4: Meta Instructions </em> </h4>
+                <p>
+                    (SIASL)² supports a number of instructions that modify the effects
+                    of other instructions and/or the way the language behavesand can thus 
+                    be seen as "meta instructions"
+                </p> 
+                <table class="table table-bordered table-light">
+                    <tbody>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center"><code>?&gt;</code></td>
+                            <td>
+                                This instruction sets the sense of the execution of the 
+                                program from the right to the left. 
+                                The way this is implemented is that when given a program
+                                the interpreter will execute the current instruction then the 
+                                "next" one until it reaches the end of the program. 
+                                ie: it will read the program from right to left and stop 
+                                at the end. 
+                                NB: this is the default behavior of (SIASL)²
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center"><code>?&lt;</code></td>
+                            <td>
+                                This instruction sets the sense of the execution of the 
+                                program from the left to the right. 
+                                The way this is implemented is that when given a program
+                                the interpreter will execute the current instruction then the 
+                                "previous" one until it reaches the beginning of the program. 
+                                ie: it will read the program from left to right and stop 
+                                at the beginning. 
+
+                                NB: this can be used at the end of a program to execute it again "backwards"
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>?,</code></td>
+                            <td>
+                                this instruction read a character from stdin and sets the 
+                                value of the number used in the 
+                                <code>*&sharp;</code> and <code>/&sharp;</code>
+                                instructions to the ASCII value of the character read.             
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center"><code>(&sharp;</code></td>
+                            <td>
+                                the <code>(&sharp;</code> will be the key feature of 
+                                the next release of (SIASL)² and will allow to 
+                                define behavior for unused instructions.
+                                However it's not implemented at the moment.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>&sharp;)</code></td>
+                            <td>
+                                the <code>&sharp;)</code> will be the key feature of 
+                                the next release of (SIASL)² and will allow to 
+                                define behavior for unused instructions.
+                                However it's not implemented at the moment.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="p35">
+
+                <h4> <em> III.5: Misc Instructions </em> </h4>
+                <p>
+                    (SIASL)² supports other instructions. They are regrouped in this category 
+                    since they don't fit in any other one. These instructions are grouped into two familed; 
+                    the "print formatters" and the "movement" instructions.
+                </p> 
+                <table class="table table-bordered table-light">
+                    <tbody>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center"><code>.+</code></td>
+                            <td>
+                                prints the value stored in the current 
+                                cell as an decimal integer
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>.-</code></td>
+                            <td>
+                                prints the value stored in the current cell as an hexadecimal
+                                integer
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>.*</code></td>
+                            <td>
+                                prints the value stored in the current cell as an octal
+                                integer
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>./</code></td>
+                            <td>
+                                prints the value stored in the current cell as an 
+                                unsigned integer
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>.?</code></td>
+                            <td>
+                                prints the value stored in the current cell as a
+                                floating point number
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center"><code>&gt;&gt;</code></td>
+                            <td>
+                                goes to the last cell of the current row
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>&lt;&lt;</code></td>
+                            <td>
+                                goes to the first cell of the current row
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>vv</code></td>
+                            <td>
+                                goes to the last cell of the matrix
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><code>^^</code></td>
+                            <td>
+                                goes to the first cell of the matrix
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
         </div>
 
         <br/>
@@ -356,44 +706,28 @@
         <div id="p4">
             <h2>
             <u>
-                IV: 
+                IV: Settable Instructions
             </u>
             </h2>
             <br/>
 
-            <div id="p41">
-                <h4>
-                <em>
-                    IV.1: 
-                </em>
-                </h4>
-                <p class="text-left">
-                    
-                </p>
-            </div>
-
-            <div id="p42">
-                <h4>
-                <em>
-                    IV.2: 
-                </em>
-                </h4>
-                <p class="text-left">
-                   
-                </p>
-            </div>
-            <div id="p43">
-                <h4>
-                <em>
-                    IV.3: 
-                </em>
-                </h4>
-                <p class="text-left">
-                 
-                </p>
-            
-            
-            </div>
+            <p>
+                (SIASL)² allows you to define behavior for every unused symbol/instruction 
+                (a symbol/instruction being two (SIASL)² characters). As for regular instructions; 
+                definable ones are commutative; which means that 
+                <code>?+</code> is the same thing as <code>+?</code>.
+                <hr/>
+                At the start of (SIASL)² none of the unused symbols has an effect. 
+                To define them; one can use (# and #). 
+                <hr/>
+                The syntax for (# and #) is : 
+                (# [unused symbol] [instructions that define new behavior of the unused symbol] #).
+                <hr/>
+                I will not write all of them down but combination of symbol not mentionned in the 
+                previous parts is a definable symbol. 
+                <hr/>
+                NB: THIS IS NOT IMPLEMENTED YET
+            </p>
         
         </div>
 

@@ -76,8 +76,6 @@ FORMAT for , and . +. is %u, -. %d ... %.3f %c ,...
 <? make execution go right to left 
 ?> execution goes left to right
 
-?+ increments a random cell?  
-
 
 (,), , # will all be neutral atm (except maybe for print formatting)
 

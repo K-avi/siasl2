@@ -36,7 +36,6 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack) {
     switch (instruction) {
 
       /* default operations; the one that already are in SIASL */
-        case (INT_NEUT<<4) | INT_NEUT:  break; //neutral op 
 
         case (INT_LEFT<<4)| INT_NEUT: idx=OP_LEFT(idx, matsize);  break;
 
@@ -88,10 +87,11 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack) {
       case (INT_DOWN<<4)| INT_DOWN: idx=0;  break; //goes to first cell 
       case (INT_UP<<4)| INT_UP : idx=(environment->size*environment->size)-1;  break; //goes to last cell 
 
-      case (INT_LEFT<<4)| INT_LEFT :  break; //goes to first cell in line
-      case (INT_RIGHT<<4)| INT_RIGHT :  break; //goes to last cell in line 
+      case (INT_LEFT<<4)| INT_LEFT : idx= idx- (idx % environment->size); break; //goes to first cell in line
+      case (INT_RIGHT<<4)| INT_RIGHT : idx= idx + (environment->size -(idx % environment->size));   break; //goes to last cell in line 
 
-      /* arithmetic primites ; stores in the current cell the result of :
+      /* 
+      arithmetic primites ; stores in the current cell the result of :
       curvalue= curvalue (airthmetic op) (movement op)->value
 
       for exemple: 
