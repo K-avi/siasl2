@@ -30,7 +30,7 @@ void sigint_handler( int sig){
     if(stack) free_stack(stack);
 
     yylex_destroy();
-    
+    printf("\n");
     exit (SIGINT);
 
     return;
@@ -50,7 +50,7 @@ int main(int argc, char ** argv){
     char* filename = NULL;
     int c;
 
-
+    printf("(SIASL)² Copyright (C) 2023  Ivan MULOT-RADOJCIC\nThis program comes with ABSOLUTELY NO WARRANTY;\nfor details see the GPLv3 documentation.\nThis is free software, and you are welcome to redistribute it under certain conditions\n\n");
 
     while ((c = getopt(argc, argv, "xshcf:")) != -1) {
         
