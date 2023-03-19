@@ -3,107 +3,44 @@
 
 <html lang="en">
     <head>
-      
         <title>(SIASL)² docu</title>
-
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css" >
-
         <!--custom css-->
         <link rel="stylesheet" href="css/styles_var.css">
-
     </head>
 
     <body>
 
-        <h1 class="text-center">
-            (SIASL)² : Documentation
-        </h1>
+        <h1 class="text-center">(SIASL)² : Documentation</h1>
         <div class="card text-white bg-light mb-3" style="max-width: 18rem;">
             <div class="card-header">
-                <h2 class="text-left blue" >
-                    Summary: 
-                </h2>
+                <h2 class="text-left blue" >Summary:</h2>
                 <br/>
             </div>
             <div class="card-body">
-                
-                    
                         <ul>
+                            <li><a href="#p1" class="text-justify">I: Introduction</a></li>
+                            <li><a href="#p2">II: Environment </a></li>
                             <li>
-                                <a href="#p1" class="text-justify">
-                                    I: Introduction
-                                </a>
-                               
-                            </li>
-                            <li>
-                                <a href="#p2">
-                                    II: Environment 
-                                </a>
+                                <a href="#p3">III: Preset instructions</a>
                                 <ul>
-                                    <li>
-                                        <a href="#p21">
-                                        1:  how is the (SIASL)² environment represented?
-                                        </a>
-                                    </li>
-                                                                   
+                                    <li><a href="#p31">1: Default Instructions</a></li>
+                                    <li><a href="#p32">2: Arithmetic Instructions</a></li>
+                                    <li><a href="#p33">3: Loop Variations</a></li>
+                                    <li><a href="#p34">4: Meta Instructions</a></li>
+                                    <li><a href="#p35">5: Misc Instructions</a></li>                                                                  
                                 </ul>
                             </li>
-                            <li>
-                                <a href="#p3">
-                                    III: Preset instructions
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="#p31">
-                                        1: Default Instructions
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#p32">
-                                        2: Arithmetic Instructions
-                                        </a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#p33">
-                                        3: Loop Variations
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#p34">
-                                        4: Meta Instructions
-                                        </a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#p35">
-                                        5: Misc Instructions
-                                        </a>
-                                    </li>
-                                                                   
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#p4">
-                                    IV: Settable instructions 
-                                </a>
-                                
-                            </li>
+                            <li><a href="#p4"> IV: Settable instructions</a></li>
                         </ul>                
             </div>
         </div>
-        
         <div id="p1">
-            <h2>
-            <u>
-               I: Introduction:
-            </u>
-            </h2>
+            <h2><u>I: Introduction:</u></h2>
             <p>
                 (SIASL)² is an <a href=https://esolangs.org/wiki/Esoteric_programming_language>Esolang</a>
                 It belongs to <a href="https://esolangs.org/wiki/Turing_tarpit">Turing tarpit</a> family of languages.
@@ -123,31 +60,15 @@
                 Crucially (SIASL)² instructions are commutative; which means that "+#" is the exact same thing as "#+" 
                 which limits the amount of instructions that can be created in (SIASL)² but makes it (in my opinion)
                 easier to use.
-        
-
             </p>
             <br/>
-            <p class="text-left">
-               
-            </p>
         </div>
-        <br/>
-        <hr/>
-        <br/>
-
+        <br/><hr/><br/>
         <div id="p2">
-            <h2>
-            <u>
-                II: Environment
-            </u>
-            </h2>
+            <h2><u>II: Environment</u></h2>
             <br/>
-
             <div id="p21">
-                <h4>
-                <em>
-                    II.1: how is the (SIASL)² environment represented?
-                </em>
+                <h4><em>II.1: how is the (SIASL)² environment represented?</em>
                 </h4>
                 <p class="text-left">
                     similarly to brainfuck ; (SIASL)² operates on memory cell. However they take the form 
@@ -162,28 +83,17 @@
                     first/last line of the matrix and going up or down.
                 </p>
             </div>
-
         </div>
-
-        <br/>
-        <hr/>
-        <br/>
-
+        <br/><hr/><br/>
         <div id="p3">
-            <h2>
-            <u>
-                III: Preset instructions
-            </u>
-            </h2>
+            <h2><u>III: Preset instructions</u></h2>
             <br/>
-
             <p>
                 (SIASL)² supports a lot of predefined instruction with different effects. It is 
                 important to understand that (SIASL)² instruction are commutative. Thus 
                 <code>v&sharp;</code> will always do the exact same thing as <code>&sharp;v</code>
                 NB: The behavior of preset instruction cannot be changed.
             </p>
-            
             <div id="p31">
 
                 <h4> <em> III.1: default instructions </em> </h4>
@@ -226,27 +136,21 @@
                             <td style="text-align:center"><code>.&sharp;</code></td>
                             <td>prints the value stored at the current cell as a character</td>
                         </tr>
-
                         <tr>
                             <td style="text-align:center"><code>,&sharp;</code></td>
                             <td>reads a character from stdin and stores it's ASCII value in the current cell</td>          
-
                         </tr>
-
                         <tr>
                             <td style="text-align:center"><code>[&sharp;</code></td>
                             <td>Jump past the matching <code>]&sharp;</code> if the cell at the pointer is 0 </td>
                         </tr>
-
                         <tr>
                             <td style="text-align:center"><code>]&sharp;</code></td>
                             <td>Jump back to the matching <code>[&sharp;</code> if the cell at the pointer is nonzero</td>
                         </tr>
-
                         <tr>
                             <td style="text-align:center"><code>*&sharp;</code></td>
-                            <td>multiply the cell under the pointer by the current mult/div value (default 2)</td>
-                            
+                            <td>multiply the cell under the pointer by the current mult/div value (default 2)</td>   
                         </tr>
                         <tr>
                             <td style="text-align:center"><code>/&sharp;</code></td>
@@ -254,14 +158,11 @@
                                sets the cell under the pointer to the result the integer division 
                                between it's value and the current mult/div value 
                                (default 2)
-                            </td>
-                            
+                            </td>     
                         </tr>
-                        
                     </tbody>
                 </table>  
             </div>
-
             <div id="p32">
                 <h4> <em> III.2: Arithmetic instructions </em> </h4>
                 <p>
@@ -438,9 +339,7 @@
                     </tbody>
                 </table>  
             </div>
-
             <div id="p33">
-
                 <h4> <em> III.3: Loop Variations </em> </h4>
                 <p>
                     (SIASL)² supports a number of instructions that are variations on the defaults
@@ -542,9 +441,7 @@
                     </tbody>
                 </table>
             </div>
-
             <div id="p34">
-
                 <h4> <em> III.4: Meta Instructions </em> </h4>
                 <p>
                     (SIASL)² supports a number of instructions that modify the effects
@@ -557,7 +454,6 @@
                             <th>Command</th>
                             <th>Description</th>
                         </tr>
-
                         <tr>
                             <td style="text-align:center"><code>?&gt;</code></td>
                             <td>
@@ -571,7 +467,6 @@
                                 NB: this is the default behavior of (SIASL)²
                             </td>
                         </tr>
-
                         <tr>
                             <td style="text-align:center"><code>?&lt;</code></td>
                             <td>
@@ -595,7 +490,6 @@
                                 instructions to the ASCII value of the character read.             
                             </td>
                         </tr>
-
                         <tr>
                             <td style="text-align:center"><code>(&sharp;</code></td>
                             <td>
@@ -617,9 +511,7 @@
                     </tbody>
                 </table>
             </div>
-
             <div id="p35">
-
                 <h4> <em> III.5: Misc Instructions </em> </h4>
                 <p>
                     (SIASL)² supports other instructions. They are regrouped in this category 
@@ -632,7 +524,6 @@
                             <th>Command</th>
                             <th>Description</th>
                         </tr>
-
                         <tr>
                             <td style="text-align:center"><code>.+</code></td>
                             <td>
@@ -695,22 +586,12 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            
+            </div>  
         </div>
-
-        <br/>
-        <hr/>
-        <br/>
-
+        <br/><hr/><br/>
         <div id="p4">
-            <h2>
-            <u>
-                IV: Settable Instructions
-            </u>
-            </h2>
+            <h2><u>IV: Settable Instructions</u></h2>
             <br/>
-
             <p>
                 (SIASL)² allows you to define behavior for every unused symbol/instruction 
                 (a symbol/instruction being two (SIASL)² characters). As for regular instructions; 
@@ -728,12 +609,7 @@
                 <hr/>
                 NB: THIS IS NOT IMPLEMENTED YET
             </p>
-        
         </div>
-
-        <br/>
-        <hr/>
-        <br/>
-
+        <br/><hr/><br/>
     </body>
 </html>

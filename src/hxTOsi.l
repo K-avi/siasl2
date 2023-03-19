@@ -27,7 +27,7 @@
 "b"|"B"		{fprintf(hhout, ".");}
 "c"|"C"		{fprintf(hhout, "[");}
 "d"|"D"		{fprintf(hhout, "]");}
-"e"|"E"		{fprintf(hhout, "#");}
+"e"|"E"		{fprintf(hhout, "?");}
 "f"|"F"		{fprintf(hhout, "#");}
 .           { ; }
 
