@@ -8,10 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 int default_mult_div=2;
-int exec_direction= 1 ; //used when changing sense of execution from "right to left" to "left to right"
-//modified when calling the "?>" and "?<" symbols.
 
 #define OP_EXEC(progr, dir) if((dir)){ (progr)= (progr)->next ;} else{ (progr)= (progr)->prev ;}
 
@@ -24,6 +21,9 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack) {
   
  // int length= environment->size;
   int idx= environment->curindex; 
+
+  int exec_direction= 1 ; //used when changing sense of execution from "right to left" to "left to right"
+//modified when calling the "?>" and "?<" symbols.
  
   
   char safe_getchar[256]; //used in read function to pass stuff safely
@@ -67,18 +67,35 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack) {
         case (INT_PRINT<<4) | INT_NEUT: printf("%c", environment->mat[idx]); break;
 
         case (INT_LBRACKET <<4 ) | INT_NEUT :
-            if (environment->mat[idx] == 0) {
-              curr = curr->other;
-            } else {
-              if (stack_ptr >= STACK_SIZE) {
-                  return -1; //stack overflow
+            if(exec_direction){
+              if (environment->mat[idx] == 0) {
+                curr = curr->other;
+              } else {
+                if (stack_ptr >= STACK_SIZE) {
+                    return -1; //stack overflow
+                }
+                stack->stack[stack_ptr++] = curr;
               }
-              stack->stack[stack_ptr++] = curr;
+              break;
+            }else{
+              curr = stack->stack[--stack_ptr];
+              continue;
             }
-            break;
         case (INT_RBRACKET <<4) | INT_NEUT :
-            curr = stack->stack[--stack_ptr];
-            continue;
+            if(!exec_direction){
+              if (environment->mat[idx] == 0) {
+                curr = curr->other;
+              } else {
+                if (stack_ptr >= STACK_SIZE) {
+                    return -1; //stack overflow
+                }
+                stack->stack[stack_ptr++] = curr;
+              }
+              break;
+            }else{
+              curr = stack->stack[--stack_ptr];
+              continue;
+            }
       
       /*new predefined operations */
 
@@ -140,120 +157,253 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack) {
 
       /*arithmetic modes */
       case (INT_LBRACKET <<4 ) | INT_PLUS : //increments curcell each time going on loop 
-            if (environment->mat[idx] == 0) {
-              curr = curr->other;
-            } else {
+            if(exec_direction){
+              if (environment->mat[idx] == 0) {
+                curr = curr->other;
+              } else {
+                environment->mat[idx]++;
+                if (stack_ptr >= STACK_SIZE) {
+                    return -1; //stack overflow
+                }
+                stack->stack[stack_ptr++] = curr;
+              }
+              
+              break;
+            }else{
+              curr = stack->stack[--stack_ptr];
               environment->mat[idx]++;
-              if (stack_ptr >= STACK_SIZE) {
-                  return -1; //stack overflow
-              }
-              stack->stack[stack_ptr++] = curr;
+              continue;
             }
-            
-            break;
         case (INT_RBRACKET <<4) | INT_PLUS : //increments curcell each time ending loop 
-            curr = stack->stack[--stack_ptr];
-            environment->mat[idx]++;
-            continue;
-        
-
-        case (INT_LBRACKET <<4 ) | INT_MINUS : //decrement curcell each time going in loop 
-            if (environment->mat[idx] == 0) {
-              curr = curr->other;
-            } else {
-              environment->mat[idx]--;
-              if (stack_ptr >= STACK_SIZE) {
-                  return -1; //stack overflow
+            if(!exec_direction){
+              if (environment->mat[idx] == 0) {
+                curr = curr->other;
+              } else {
+                environment->mat[idx]++;
+                if (stack_ptr >= STACK_SIZE) {
+                    return -1; //stack overflow
+                }
+                stack->stack[stack_ptr++] = curr;
               }
-              stack->stack[stack_ptr++] = curr;
+              
+              break;
+            }else{
+              curr = stack->stack[--stack_ptr];
+              environment->mat[idx]++;
+              continue;
+            }    
+        
+        case (INT_LBRACKET <<4 ) | INT_MINUS : //decrement curcell each time going in loop 
+            if(exec_direction){
+              if (environment->mat[idx] == 0) {
+                curr = curr->other;
+              } else {
+                environment->mat[idx]--;
+                if (stack_ptr >= STACK_SIZE) {
+                    return -1; //stack overflow
+                }
+                stack->stack[stack_ptr++] = curr;
+              }
+              
+              break;
+            }else{
+              curr = stack->stack[--stack_ptr];
+              environment->mat[idx]++;
+              continue;
             }
-            
-            break;
         case (INT_RBRACKET <<4) | INT_MINUS : //decrements curcell each time finishing loop 
-            curr = stack->stack[--stack_ptr];
-            environment->mat[idx]--;
-
-            continue;
+            
+            if(!exec_direction){
+              if (environment->mat[idx] == 0) {
+                curr = curr->other;
+              } else {
+                environment->mat[idx]--;
+                if (stack_ptr >= STACK_SIZE) {
+                    return -1; //stack overflow
+                }
+                stack->stack[stack_ptr++] = curr;
+              }
+              
+              break;
+            }else{
+              curr = stack->stack[--stack_ptr];
+              environment->mat[idx]++;
+              continue;
+            }
         /*movement modes */
         case (INT_LBRACKET <<4 ) | INT_LEFT : //goes to the left of curcell each time going in loop 
-            if (environment->mat[idx] == 0) {
-              curr = curr->other;
-              idx=OP_LEFT(idx, matsize);
-            } else {
-          
-              if (stack_ptr >= STACK_SIZE) {
-                  return -1; //stack overflow
-              }
-              stack->stack[stack_ptr++] = curr;
-              idx=OP_LEFT(idx, matsize);
-            }
+            if(exec_direction){
+              if (environment->mat[idx] == 0) {
+                curr = curr->other;
+                idx=OP_LEFT(idx, matsize);
+              } else {
             
-            break;
-        case (INT_RBRACKET <<4) | INT_LEFT : //goes to the left of curcell each time ending loop
-            curr = stack->stack[--stack_ptr];
+                if (stack_ptr >= STACK_SIZE) {
+                    return -1; //stack overflow
+                }
+                stack->stack[stack_ptr++] = curr;
+                idx=OP_LEFT(idx, matsize);
+              }
+              
+              break;
+            }else{
+              curr = stack->stack[--stack_ptr];
           
-            idx=OP_LEFT(idx, matsize);
-            continue;
+              idx=OP_LEFT(idx, matsize);
+              continue;
+            }
+        case (INT_RBRACKET <<4) | INT_LEFT : //goes to the left of curcell each time ending loop
+            if(!exec_direction){
+              if (environment->mat[idx] == 0) {
+                curr = curr->other;
+                idx=OP_LEFT(idx, matsize);
+              } else {
+            
+                if (stack_ptr >= STACK_SIZE) {
+                    return -1; //stack overflow
+                }
+                stack->stack[stack_ptr++] = curr;
+                idx=OP_LEFT(idx, matsize);
+              }
+              
+              break;
+            }else{
+              curr = stack->stack[--stack_ptr];
+          
+              idx=OP_LEFT(idx, matsize);
+              continue;
+            }
         
         case (INT_LBRACKET <<4 ) | INT_RIGHT: //goes to the right of curcell each time going on loop 
-            if (environment->mat[idx] == 0) {
-              curr = curr->other;
-              idx=OP_RIGHT(idx, matsize);
-            } else {
-             
-              if (stack_ptr >= STACK_SIZE) {
-                  return -1; //stack overflow
-              }
-              stack->stack[stack_ptr++] = curr;
-              idx=OP_RIGHT(idx, matsize);
-            }
+            if(exec_direction){
+              if (environment->mat[idx] == 0) {
+                curr = curr->other;
+                idx=OP_RIGHT(idx, matsize);
+              } else {
             
-            break;
+                if (stack_ptr >= STACK_SIZE) {
+                    return -1; //stack overflow
+                }
+                stack->stack[stack_ptr++] = curr;
+                idx=OP_RIGHT(idx, matsize);
+              }
+              
+              break;
+            }else{
+              curr = stack->stack[--stack_ptr];
+          
+              idx=OP_RIGHT(idx, matsize);
+              continue;
+            }
         case (INT_RBRACKET <<4) | INT_RIGHT ://goes to the right of curcell each time ending loop
-            curr = stack->stack[--stack_ptr];
-         
-            idx=OP_RIGHT(idx, matsize);
-            continue;
+            if(!exec_direction){
+              if (environment->mat[idx] == 0) {
+                curr = curr->other;
+                idx=OP_RIGHT(idx, matsize);
+              } else {
+            
+                if (stack_ptr >= STACK_SIZE) {
+                    return -1; //stack overflow
+                }
+                stack->stack[stack_ptr++] = curr;
+                idx=OP_RIGHT(idx, matsize);
+              }
+              
+              break;
+            }else{
+              curr = stack->stack[--stack_ptr];
+          
+              idx=OP_RIGHT(idx, matsize);
+              continue;
+            }
         
         case (INT_LBRACKET <<4 ) | INT_UP : //goes to up of curcell each time going on loop 
-            if (environment->mat[idx] == 0) {
-              curr = curr->other;
-              idx=OP_UP(idx, matsize);
-            } else {
-         
-              if (stack_ptr >= STACK_SIZE) {
-                  return -1; //stack overflow
-              }
-              stack->stack[stack_ptr++] = curr;
-              idx=OP_UP(idx, matsize);
-            }
+            if(exec_direction){
+              if (environment->mat[idx] == 0) {
+                curr = curr->other;
+                idx=OP_UP(idx, matsize);
+              } else {
             
-            break;
-        case (INT_RBRACKET <<4) | INT_UP : //goes to up of curcell each time ending loop
-            curr = stack->stack[--stack_ptr];
+                if (stack_ptr >= STACK_SIZE) {
+                    return -1; //stack overflow
+                }
+                stack->stack[stack_ptr++] = curr;
+                idx=OP_UP(idx, matsize);
+              }
+              
+              break;
+            }else{
+              curr = stack->stack[--stack_ptr];
           
-            idx=OP_UP(idx, matsize);
-            continue;
+              idx=OP_UP(idx, matsize);
+              continue;
+            }
+        case (INT_RBRACKET <<4) | INT_UP : //goes to up of curcell each time ending loop
+            
+            if(!exec_direction){
+              if (environment->mat[idx] == 0) {
+                curr = curr->other;
+                idx=OP_UP(idx, matsize);
+              } else {
+            
+                if (stack_ptr >= STACK_SIZE) {
+                    return -1; //stack overflow
+                }
+                stack->stack[stack_ptr++] = curr;
+                idx=OP_UP(idx, matsize);
+              }
+              
+              break;
+            }else{
+              curr = stack->stack[--stack_ptr];
+          
+              idx=OP_UP(idx, matsize);
+              continue;
+            }
         
         case (INT_LBRACKET <<4 ) | INT_DOWN : //goes down of curcell each time going on loop 
-            if (environment->mat[idx] == 0) {
-              curr = curr->other;
-              idx=OP_DOWN(idx, matsize);
-            } else {
-             
-              if (stack_ptr >= STACK_SIZE) {
-                  return -1; //stack overflow
-              }
-              stack->stack[stack_ptr++] = curr;
-              idx=OP_DOWN(idx, matsize);
-            }
             
-            break;
+            if(exec_direction){
+              if (environment->mat[idx] == 0) {
+                curr = curr->other;
+                idx=OP_DOWN(idx, matsize);
+              } else {
+            
+                if (stack_ptr >= STACK_SIZE) {
+                    return -1; //stack overflow
+                }
+                stack->stack[stack_ptr++] = curr;
+                idx=OP_DOWN(idx, matsize);
+              }
+              
+              break;
+            }else{
+              curr = stack->stack[--stack_ptr];
+          
+              idx=OP_DOWN(idx, matsize);
+              continue;
+            }
         case (INT_RBRACKET <<4) | INT_DOWN : //goes down of curcell each time ending loop
-            curr = stack->stack[--stack_ptr];
-    
-            idx=OP_DOWN(idx, matsize);
-            continue;
+           if(!exec_direction){
+              if (environment->mat[idx] == 0) {
+                curr = curr->other;
+                idx=OP_DOWN(idx, matsize);
+              } else {
+            
+                if (stack_ptr >= STACK_SIZE) {
+                    return -1; //stack overflow
+                }
+                stack->stack[stack_ptr++] = curr;
+                idx=OP_DOWN(idx, matsize);
+              }
+              
+              break;
+            }else{
+              curr = stack->stack[--stack_ptr];
+          
+              idx=OP_DOWN(idx, matsize);
+              continue;
+            }
             
       /* silly wildcard stuff */
 

@@ -1,6 +1,5 @@
 <!DOCTYPE html >
 
-
 <html lang="en">
     <head>
         <title>(SIASL)² docu</title>
@@ -14,7 +13,6 @@
     </head>
 
     <body>
-
         <h1 class="text-center">(SIASL)² : Documentation</h1>
         <div class="card text-white bg-light mb-3" style="max-width: 18rem;">
             <div class="card-header">
@@ -48,15 +46,11 @@
                 The most simple way to descripe it would be as some sort of 2d <a href=" https://esolangs.org/wiki/Brainfuck">Brainfuck</a>.
                 see <a href="https://esolangs.org/wiki/Generic_2D_Brainfuck">Generic 2D Brainfuck</a> and <a href="https://esolangs.org/wiki/2DFuck">2DFuck</a>
                 for reference.
-
                 the name SIASL stands for Siasl Is a Silly Language (very good name). The ()² part comes from the fact that 
                 each (SIASL)² instruction is two <a href="https://github.com/K-avi/siasl">SIASL</a> instruction (SIASL is the language 
                 I made before making this one and was a way for me to learn a few stuff before doing (SIASL)² ).
-
                 The main thing differentiating (SIASL)² from these languages is that a (SIASL)² instruction is a combination of two characters instead of one. 
-
                 (check out parts <a href=#p3>III</a> and <a href=#p3>IV</a> for more details).
-
                 Crucially (SIASL)² instructions are commutative; which means that "+#" is the exact same thing as "#+" 
                 which limits the amount of instructions that can be created in (SIASL)² but makes it (in my opinion)
                 easier to use.
@@ -74,12 +68,9 @@
                     similarly to brainfuck ; (SIASL)² operates on memory cell. However they take the form 
                     of a square matrix instead of a simple array ; allowing for movement in 4 directions instead of two. 
                     ( < , > , v , ^ ) related operations.
-
                     Each cell contains a signed integer. It's value can be modifier by a lot of different operations. 
-
                     When reaching the end of a "line" and trying to go to the right the data pointer will be move to the next one. 
                     Similar behavior occurs when reaching the start and trying to go to the left or when reaching the 
-
                     first/last line of the matrix and going up or down.
                 </p>
             </div>
@@ -126,7 +117,6 @@
                         <tr>
                             <td style="text-align:center"><code>+&sharp;</code></td>
                             <td>increments the cell under the pointer</td>  
-
                         </tr>
                         <tr>
                             <td style="text-align:center"><code>-&sharp;</code></td>
@@ -559,7 +549,6 @@
                                 floating point number
                             </td>
                         </tr>
-
                         <tr>
                             <td style="text-align:center"><code>&gt;&gt;</code></td>
                             <td>

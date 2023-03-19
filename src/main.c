@@ -192,5 +192,6 @@ int main(int argc, char ** argv){
 
         yylex_destroy();
     }
+    printf("\n");
     return 0;
 }

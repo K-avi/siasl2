@@ -1,0 +1,3 @@
+[-#]<+.+
+
+sets the current cell to the number of stored on the cell on its left and prints it as an integer

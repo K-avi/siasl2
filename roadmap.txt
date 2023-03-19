@@ -14,3 +14,10 @@ SIASL :
     
     -will support defining behavior for symbols
     -might support redefining behavior for some existing symbols (oh boy!)
+
+needed for release of v1: 
+
+example programs showcasing the features of the language.
+example programs for the hexadecimal lexic 
+
+say that space is equivalent to # somewhere

@@ -38,7 +38,7 @@
 
 %start program
 
-%expect 49
+%expect 43
 
 
 %destructor { ; } <instruction>
@@ -52,7 +52,7 @@ program
 stmts
   : stmt        { $$ = $1; }
   | stmts stmt  { mergeInstruction($$ = $1, $2); }
-  | stmts error { printf( "stmts error\n"); free_instruct($1) ; $$=NULL; YYABORT; }
+  | stmts error { free_instruct($1) ; $$=NULL; YYABORT; }
 ;
 
 stmt
@@ -100,7 +100,7 @@ loop_start
 
   | LBRACKET NEUTRAL { $$=symbol_from_syllable( $1, $2);}
   | NEUTRAL LBRACKET { $$=symbol_from_syllable( $1, $2);}
-
+;
 
 
 loop_end
@@ -124,17 +124,41 @@ loop_end
 
   | RBRACKET NEUTRAL { $$=symbol_from_syllable( $1, $2);}
   | NEUTRAL RBRACKET { $$=symbol_from_syllable( $1, $2);}
-
+;
 
 
 symbol 
   : syllable syllable  {
     $$=symbol_from_syllable( $1, $2);
-  }  
-  | syllable {
-    $$=symbol_from_syllable( NEUTRAL, $1);
   }
 
+  | RBRACKET PRINT {$$=symbol_from_syllable($1 , $2);}
+  | PRINT RBRACKET {$$=symbol_from_syllable($1 , $2);}
+  | LBRACKET PRINT {$$=symbol_from_syllable($1 , $2);}
+  | PRINT LBRACKET {$$=symbol_from_syllable($1 , $2);}
+
+  | RBRACKET READ {$$=symbol_from_syllable($1 , $2);}
+  | READ RBRACKET {$$=symbol_from_syllable($1 , $2);}
+  | LBRACKET READ {$$=symbol_from_syllable($1 , $2);}
+  | READ LBRACKET {$$=symbol_from_syllable($1 , $2);}
+
+  | RBRACKET MULT {$$=symbol_from_syllable($1 , $2);}
+  | MULT RBRACKET {$$=symbol_from_syllable($1 , $2);}
+  | LBRACKET MULT {$$=symbol_from_syllable($1 , $2);}
+  | MULT LBRACKET {$$=symbol_from_syllable($1 , $2);}
+
+  | RBRACKET DIV {$$=symbol_from_syllable($1 , $2);}
+  | DIV RBRACKET {$$=symbol_from_syllable($1 , $2);}
+  | LBRACKET DIV {$$=symbol_from_syllable($1 , $2);}
+  | DIV LBRACKET {$$=symbol_from_syllable($1 , $2);}
+
+  | RBRACKET WILDCARD {$$=symbol_from_syllable($1 , $2);}
+  | WILDCARD RBRACKET {$$=symbol_from_syllable($1 , $2);}
+  | LBRACKET WILDCARD {$$=symbol_from_syllable($1 , $2);}
+  | WILDCARD LBRACKET {$$=symbol_from_syllable($1 , $2);}
+
+  | syllable {$$=symbol_from_syllable( NEUTRAL, $1);}
+;
 
 syllable
   : PRINT
@@ -149,8 +173,6 @@ syllable
   | DIV
   | NEUTRAL
   | WILDCARD
-  | LBRACKET 
-  | RBRACKET
 ;
 
 %%
