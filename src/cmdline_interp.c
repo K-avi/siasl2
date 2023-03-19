@@ -8,7 +8,7 @@
 
 
 
-extern instruction * prog;
+extern program * prog;
 
 
 char hexTObf( char hexChr ){
@@ -111,7 +111,7 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
  
          if(!syntax_err) {
             exec_prgm(prog, environment, stack);
-            free_instruct(prog);
+            free_prog(prog);
          }
          progempty=1;    
          yylex_destroy();

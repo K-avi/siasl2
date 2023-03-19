@@ -11,10 +11,15 @@
 
 int default_mult_div=2;
 
-int exec_prgm( instruction* program, CELLMATRIX* environment, S_STACK* stack) {
+int exec_direction= 1 ; //used when changing sense of execution from "right to left" to "left to right"
+//modified when calling the "?>" and "?<" symbols.
 
-  if(! (program && environment && stack)) return -1;
-  instruction* curr = program;
+#define OP_EXEC(progr, dir) if ( (dir) ){ (progr)= (progr)->next ;} else{ (progr)= (progr)->prev ;}
+
+int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack) {
+
+  if(! (progr && environment && stack)) return -1;
+  instruction* curr = progr->head;
 
   unsigned short stack_ptr = 0;
   
@@ -265,13 +270,20 @@ int exec_prgm( instruction* program, CELLMATRIX* environment, S_STACK* stack) {
             }
           
           break;
+      case (INT_WILDCARD<<4) | INT_LEFT: 
+          exec_direction= 0;
+          break;
+      
+      case (INT_WILDCARD<<4) | INT_RIGHT: 
+          exec_direction= 1;
+          break;
 
       /* not done yet */
 
         default: 
          break;
     }
-    curr = curr->next;
+    OP_EXEC(curr, exec_direction);
   }
   environment->curindex=idx;
   return 0;

@@ -3,6 +3,21 @@
 #include <stdlib.h>
 
 
+void free_instruct ( instruction * instruct){
+    if(!instruct) return;
+
+    instruction * tmp1= instruct, * tmp2=instruct;
+
+    while(tmp1){
+        tmp2=tmp2->next; 
+        free(tmp1);
+
+        tmp1=tmp2;
+    }
+
+}//not tested 
+
+
 int bison_token_to_internal( int token){
     /*
     converts flex/bison generated token to internal rep; 
@@ -47,72 +62,6 @@ Symbol symbol_from_syllable( int tok1 , int  tok2){
 
 }
 
-instruction * mkinstruction( Symbol sym) {
-   
-  instruction* ret = (instruction*)malloc(sizeof(instruction));
-  
-  ret->symbol.token1 = sym.token1;
-  ret->symbol.token2 = sym.token2;
-  ret->next = NULL;
- 
-  ret->other = NULL;
-  return ret;
-}
-
-//append would be better if list was doubly linked cuz O(1) vs O(n) and shit...
-instruction * add_instruction( instruction* program, instruction * instruct){
-   
-    instruction* curr = program;
-    while (curr->next != NULL) {
-        curr = curr->next;
-    }
-    curr->next = instruct;
-    return program;
-}
-
-
-void free_instruct( instruction* parsed_prog){
-    
-    if(!parsed_prog) return;
-    
-    instruction* tmp= parsed_prog, *tmp1=parsed_prog;
-  
-    while (tmp){
-     
-        tmp1=tmp1->next;
-
-        free(tmp);
-
-        tmp=tmp1;
-    }
-}
-
-
-
-int parsed_to_int( instruction * parsed_prog){
-    /*
-    turns the list of parsed instruction tokens retrieved via flex/bison 
-    into the list of internal instructions. 
-    This is gonna be VERY usefull down the line cuz there will be multiple parsers for the language
-    */
-    instruction* curr= parsed_prog;
-   
-    while(curr){
-       
-        int curtoken1= bison_token_to_internal(curr->symbol.token1), curtoken2= bison_token_to_internal(curr->symbol.token2) ;
-        if(curtoken1<=0 || curtoken2<=0 ){
-
-            return curtoken1 | curtoken2; //return token error
-        }
-
-        curr->symbol.token1=curtoken1;
-        curr->symbol.token2=curtoken2;
-
-        curr=curr->next; 
-    }
-    return 1; //returns OK
-}//works; obsolete
-
 
 char token_to_char(int token){
     
@@ -137,23 +86,10 @@ char token_to_char(int token){
     return '?';
 }
 
-void printprgm( instruction * prgm){
-
-    instruction * cur=prgm; 
-
-    while(cur){
-        printf("%c%c", token_to_char(cur->symbol.token1), token_to_char(cur->symbol.token2) );
-        cur=cur->next;
-    }
-    printf("\n");
-}
-
-
-
 ////// new implementation of program ;/////
 
-dinstruction * mkDinstruction( Symbol sym){
-    dinstruction * ret = (dinstruction*) malloc(sizeof(dinstruction));
+instruction * mkinstruction( Symbol sym){
+    instruction * ret = (instruction*) malloc(sizeof(instruction));
 
     ret->symbol=sym;
     ret->next=NULL;
@@ -173,7 +109,7 @@ program* initProg(){
     return ret;
 }//not tested 
 
-void insertHead( program * prog,  dinstruction * newH){
+void insertHead( program * prog,  instruction * newH){
     if(! (newH && prog) ) return;
     newH->next= prog->head;
     newH->prev=NULL;
@@ -186,7 +122,7 @@ void insertHead( program * prog,  dinstruction * newH){
     prog->head=newH;
 }//not tested 
 
-void insertTail( program * prog, dinstruction * newT){
+void insertTail( program * prog, instruction * newT){
     
     if(! (newT && prog) ) return;
     newT->next=NULL;
@@ -204,7 +140,7 @@ void insertTail( program * prog, dinstruction * newT){
 void free_prog (program * prog){
     if(!prog) return;
 
-    dinstruction * tmp1= prog->head, * tmp2=prog->head;
+    instruction * tmp1= prog->head, * tmp2=prog->head;
 
     while(tmp1){
         tmp2=tmp2->next; 
@@ -216,13 +152,68 @@ void free_prog (program * prog){
     free(prog);
 }//not tested 
 
-void Dprintprgm( program* prgm){
 
-    dinstruction * cur=prgm->head; 
+void printprgm( program* prgm){
+
+    instruction * cur=prgm->head; 
 
     while(cur){
         printf("%c%c", token_to_char(cur->symbol.token1), token_to_char(cur->symbol.token2) );
         cur=cur->next;
     }
     printf("\n");
+}//not tested
+
+
+void mergeInstruction( instruction * list1, instruction * list2){
+    /*
+    adds list2 to the end of list1 
+    */
+    if (! (list1 && list2)) return;
+
+    instruction * tmp=list1; 
+
+    while(tmp->next){
+        tmp=tmp->next;
+    }   
+
+    tmp->next=list2; 
+    list2->prev= tmp;
+}//not tested 
+
+
+void progMerge (program * prog, instruction * list){
+    /*
+    different cases : prog is empty; 
+
+    prog has one or more elements ? 
+    */
+    if(! (prog && list)) return;
+
+    
+    if (! (prog->tail && prog->head)){ //case : progempty
+        prog->head= list;
+
+        instruction * tmp= list; 
+
+        while(tmp->next){
+            tmp=tmp->next; 
+        }
+        prog->tail= tmp;
+    }else{ //at least one element in prog; tail has to be changed to become last element of list 
+
+        instruction * oldTail= prog->tail;
+
+        oldTail->next= list; 
+        list->prev= oldTail;
+
+        instruction * tmp= list; 
+
+        while(tmp->next){
+            tmp=tmp->next;
+        }
+
+        prog->tail=tmp;
+    }
+    
 }//not tested

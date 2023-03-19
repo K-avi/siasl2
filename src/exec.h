@@ -4,6 +4,6 @@
 #include "ast.h"
 #include "cells.h"
 #include "stack.h"
-extern int exec_prgm( instruction* program, CELLMATRIX* environment, S_STACK* stack);
+extern int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack);
 
 #endif

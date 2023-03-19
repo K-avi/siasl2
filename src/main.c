@@ -20,11 +20,11 @@
 #include <signal.h>
 
 
-extern instruction * prog;
+extern program * prog;
 
 void sigint_handler( int sig){
     if(!progempty) {
-        free_instruct(prog);
+        free_prog(prog);
     }
     if(environment) free_mat(environment);
     if(stack) free_stack(stack);
@@ -187,7 +187,7 @@ int main(int argc, char ** argv){
         /*freeing everything after exec*/
         free_mat(environment);
         free_stack(stack);
-        free_instruct(prog);
+        free_prog(prog);
         progempty=1;
 
         yylex_destroy();

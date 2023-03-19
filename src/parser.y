@@ -13,7 +13,7 @@
   extern int yyparse(void);
   void yyerror(const char *s);
 
-  struct instruction * prog;
+  struct program * prog;
   
 %}
 
@@ -24,13 +24,15 @@
 
   struct symbol{ int token1; int token2; } sym;
 
+  struct program * prog;
 }
 
 %token <token> PRINT READ LEFT RIGHT UP DOWN PLUS MINUS MULT DIV NEUTRAL WILDCARD
 %token <token> LBRACKET RBRACKET
 
-%type <instruction> program stmts stmt loop
+%type <instruction> stmts stmt loop
 %type <token> syllable
+%type <prog> program
 
 %type <sym> loop_start loop_end symbol
 
@@ -44,12 +46,12 @@
 %%
 
 program
-  : stmts { prog = $$; }
+  : stmts { prog=initProg(); progMerge(prog, $1); }
 ;
 
 stmts
   : stmt        { $$ = $1; }
-  | stmts stmt  { add_instruction($$ = $1, $2); }
+  | stmts stmt  { mergeInstruction($$ = $1, $2); }
   | stmts error { printf( "stmts error\n"); free_instruct($1) ; $$=NULL; YYABORT; }
 ;
 
@@ -64,7 +66,7 @@ loop
       $$ = mkinstruction($1);
       $$->next = $2;
       $$->other = mkinstruction($3);
-      add_instruction($$->next, $$->other);
+      mergeInstruction($$->next, $$->other);
       $$->other->other = $$;
     }
   | loop_start loop_end{
