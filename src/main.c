@@ -2,6 +2,7 @@
 #include "ast.h"
 #include "cmdline_interp.h"
 #include "exec.h"
+#include "macros.h"
 #include "stack.h"
 #include "globals.h"
 
@@ -21,6 +22,7 @@
 
 
 extern program * prog;
+extern macrotable * table;
 
 void sigint_handler( int sig){
     if(!progempty) {
@@ -188,6 +190,8 @@ int main(int argc, char ** argv){
         free_mat(environment);
         free_stack(stack);
         free_prog(prog);
+        free_table(table);
+        
         progempty=1;
 
         yylex_destroy();

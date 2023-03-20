@@ -51,10 +51,10 @@ Symbol symbol_from_syllable( int tok1 , int  tok2){
      unsigned short i_tok1= bison_token_to_internal(tok1), i_tok2=bison_token_to_internal(tok2);
      //printf("in sym from syll %d %d %u %u\n", tok1, tok2, i_tok1 , i_tok2);
      if (i_tok1 > i_tok2) {
-        Symbol ret= {i_tok2, i_tok1};
+        Symbol ret= i_tok2 | ( i_tok1<<4);
         return ret;
      }else {
-        Symbol ret= { i_tok1, i_tok2};
+        Symbol ret=  i_tok1|( i_tok2<<4);
         return ret;
      }
 
@@ -173,7 +173,7 @@ void printprgm( program* prgm){
     instruction * cur=prgm->head; 
 
     while(cur){
-        printf("%c%c", token_to_char(cur->symbol.token1), token_to_char(cur->symbol.token2) );
+        printf("%c%c", token_to_char(cur->symbol), token_to_char( (cur->symbol>>4) & 0xF));
         cur=cur->next;
     }
     printf("\n");

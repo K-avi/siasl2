@@ -15,9 +15,30 @@ SIASL :
     -will support defining behavior for symbols
     -might support redefining behavior for some existing symbols (oh boy!)
 
-needed for release of v1: 
 
-example programs showcasing the features of the language.
-example programs for the hexadecimal lexic .
+support to define behavior: 
 
-then ig I can release v1 n start implementing stuff for v2 
+internal support: 
+
+    create table where set instructions are stored
+
+parser support : 
+
+    something like 
+
+    openpar symbol stmts closepar 
+
+    make sure that stmts ARE NOT EXECUTED
+
+    and that u add symbol and stmts to the internal structure
+
+
+test functions in macro.c ; 
+add non-default symbol support in exec
+ 
+figure out parsing of in bison
+
+parsing : defun should prolly return a tableentry 
+
+in stmts or wrapper of it should happen stuff to a table initialised when beginning parsing 
+

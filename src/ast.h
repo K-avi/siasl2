@@ -3,9 +3,31 @@
 
 #include "parser.tab.h"
 
-typedef struct symbol Symbol;
 
+typedef unsigned short Symbol;
+struct program ;
 
+typedef struct macroentry{
+    Symbol sym; 
+    struct program * prog;
+}macroentry;
+
+typedef struct entryarray{ 
+    macroentry * entries ;
+
+    unsigned short currentries; 
+    unsigned short maxentries;
+
+}entryarray;
+
+typedef struct macrotable{
+    
+    entryarray * table;
+
+    unsigned short size;
+    unsigned short arrsize;
+
+}macrotable;
 
 
 typedef struct instruction{ 
@@ -19,6 +41,8 @@ typedef struct instruction{
 typedef struct program{
     instruction * head; 
     instruction * tail;
+
+  //  macrotable * funs;
 }program;
 
 

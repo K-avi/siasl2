@@ -7,6 +7,7 @@
   #include <unistd.h>
 
   #include "ast.h"
+  #include "macros.h"
 
   extern FILE* yyin;
   extern int yylex(void);
@@ -14,6 +15,8 @@
   void yyerror(const char *s);
 
   struct program * prog;
+
+  struct macrotable * table;
   
 %}
 
@@ -22,19 +25,19 @@
   struct instruction* instruction;
   int token;
 
-  struct symbol{ int token1; int token2; } sym;
+  unsigned short sym;
 
   struct program * prog;
 }
 
-%token <token> PRINT READ LEFT RIGHT UP DOWN PLUS MINUS MULT DIV NEUTRAL WILDCARD
+%token <token> PRINT READ LEFT RIGHT UP DOWN PLUS MINUS MULT DIV NEUTRAL WILDCARD LPAR RPAR
 %token <token> LBRACKET RBRACKET
 
 %type <instruction> stmts stmt loop
-%type <token> syllable
+%type <token> syllable 
 %type <prog> program
 
-%type <sym> loop_start loop_end symbol
+%type <sym> loop_start loop_end symbol 
 
 %start program
 
@@ -46,14 +49,17 @@
 %%
 
 program
-  : stmts { prog=initProg(); progMerge(prog, $1); }
+  : stmts { prog=initProg(); table=init_table(_TABLE_DEF_SIZE, _ARRENT_DEF_SIZE); progMerge(prog, $1); }
 ;
 
 stmts
   : stmt        { $$ = $1; }
   | stmts stmt  { mergeInstruction($$ = $1, $2); }
   | stmts error { free_instruct($1) ; $$=NULL; YYABORT; }
+
 ;
+
+
 
 stmt
   : loop { $$ = $1; }
@@ -78,6 +84,8 @@ loop
     }
   
 ;
+
+
 
 loop_start
   : LBRACKET PLUS { $$=symbol_from_syllable( $1, $2);}

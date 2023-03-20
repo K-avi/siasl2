@@ -21,7 +21,7 @@ S_STACK * init_stack(unsigned size){
 void print_stack( S_STACK* stack){
     for( uint32_t i=0; i<stack->size; i++){
         if(stack->stack[i]){
-            printf("%u : %c%c\t", i, token_to_char(stack->stack[i]->symbol.token1), token_to_char(stack->stack[i]->symbol.token2) );
+            printf("%u : %c%c\t", i, token_to_char(stack->stack[i]->symbol), token_to_char(stack->stack[i]->symbol>>4) );
         }else{
             printf("%u : (null\t)", i);
         }

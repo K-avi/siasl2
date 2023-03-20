@@ -31,7 +31,7 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack) {
   uint32_t matsize= environment->size* environment->size;
   while (curr) {
     
-    unsigned short instruction = curr->symbol.token1 | ((curr->symbol.token2)<<4);
+    unsigned short instruction = curr->symbol;
 
     switch (instruction) {
 

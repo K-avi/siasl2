@@ -26,8 +26,8 @@
 "["         { return TOKEN(LBRACKET); }
 "]"         { return TOKEN(RBRACKET); }
 "#"         { return TOKEN(NEUTRAL); }
-"("         { return TOKEN(NEUTRAL); }
-")"         { return TOKEN(NEUTRAL); }
+"("         { return TOKEN(LPAR); }
+")"         { return TOKEN(RPAR); }
 "?"         { return TOKEN(WILDCARD); }
 
 .           { ; }

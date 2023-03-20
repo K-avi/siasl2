@@ -10,7 +10,7 @@ LFLAGS :=
 
 YACC := bison
 YFLAGS := -d -v
-SRCS := exec.c ast.c cells.c stack.c globals.c cmdline_interp.c
+SRCS := exec.c ast.c cells.c stack.c globals.c cmdline_interp.c macros.c
 
 all: $(TARGET)
 

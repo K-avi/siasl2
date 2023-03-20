@@ -1,3 +1,4 @@
+trash.txt
 *.o 
 lex.*.* 
 parser.tab.*
