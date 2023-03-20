@@ -18,6 +18,6 @@ SIASL :
 needed for release of v1: 
 
 example programs showcasing the features of the language.
-example programs for the hexadecimal lexic 
+example programs for the hexadecimal lexic .
 
-say that space is equivalent to # somewhere
+then ig I can release v1 n start implementing stuff for v2 

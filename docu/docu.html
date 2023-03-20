@@ -90,7 +90,8 @@
                 <h4> <em> III.1: default instructions </em> </h4>
                 <p>
                     instruction containing a <code>&sharp;</code> are very similar to traditionnal Brainfuck instruction. 
-                    They are simple and straightforward operations. I call them the "default" family of instruction 
+                    They are simple and straightforward operations. I call them the "default" family of instruction.
+                    PS: to make programs easier to read <code>&sharp;</code> and space are equivalent. 
                 </p> 
                 <table class="table table-bordered table-light">
                     <tbody>
@@ -466,10 +467,11 @@
                                 the interpreter will execute the current instruction then the 
                                 "previous" one until it reaches the beginning of the program. 
                                 ie: it will read the program from left to right and stop 
-                                at the beginning. 
+                                at the beginning. Also reverses the role of [* and *] so that open bracket
+                                are seen as closing ones and vide-versa
                                 NB: this can be used at the end of a program to execute it again "backwards"
-                                NB: in the interactive interpreter; the flow of execution is reset to default 
-                                after each line evaluated.
+                                NB: in the interactive interpreter; the flow of execution is set to default 
+                                after each line evaluated this is done to avoid problems with loops.
                             </td>
                         </tr>
                         <tr>
