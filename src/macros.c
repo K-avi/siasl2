@@ -2,7 +2,7 @@
 #include "ast.h"
 #include <stdlib.h>
 
-
+#include <stdio.h>
 
 program * instructToProg( instruction * instruct){
     /*
@@ -59,7 +59,7 @@ entryarray * initArr( int size){
     entryarray * ret= (entryarray* ) malloc(size* sizeof(entryarray));
     if(!ret) return NULL;
 
-    ret->entries= calloc(size, sizeof(macroentry));
+    ret->entries= (macroentry**) malloc(size* sizeof(macroentry*));
     if(!ret->entries){
         free(ret);
         return NULL;
@@ -76,9 +76,11 @@ void free_entryarray ( entryarray * array){
 
     if(array->entries){
         for(int i =0 ; i<array->currentries; i++){
-            free_prog(array->entries[i].prog);
+            free_macroentry(array->entries[i]);
+           
         }
     }
+    free(array->entries);
     free(array);
 }//not tested
 
@@ -89,8 +91,7 @@ void appArr( entryarray * arr, macroentry * element){
     be carefull with that
     */
     if(! (arr && element)) return;
-    arr->entries[arr->currentries].sym=element->sym;
-    arr->entries[arr->currentries].prog=element->prog;
+    arr->entries[arr->currentries] = element;
 
     arr->currentries++;
 }//not tested
@@ -140,7 +141,15 @@ void appTable ( macrotable * mtable, macroentry * entry){
 
     unsigned key= hashSymbol(entry->sym, mtable->size);
 
+    printf("key is %d , %p \n", key, mtable->table[key]);
+
+    if(! (mtable->table[key])) {
+        mtable->table[key]=initArr(_ARRENT_DEF_SIZE);
+    }
+     printf("key is %d , %p \n", key, mtable->table[key]);
     appArr(mtable->table[key], entry);
+
+   // free_macroentry(entry);
     
 }//not tested 
 //doesnt handle case where it's already defined! !!!!!!!!!!!!!
@@ -167,13 +176,12 @@ program * findProg( macrotable * mtable, Symbol sym){
     unsigned key = hashSymbol(sym, mtable->size);
 
     for (int i=0; i<mtable->table[key]->currentries; i++){
-        if(mtable->table[key]->entries[i].sym==sym){
-            return mtable->table[key]->entries[i].prog;
+
+        if(mtable->table[key]->entries[i]->sym==sym){
+
+            return mtable->table[key]->entries[i]->prog;
         }
     }
 
     return NULL;
 }//not tested 
-
-
-

@@ -37,7 +37,7 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotab
     
     unsigned short instruction = curr->symbol;
 
-    printf("instruct is %c%c\n",  token_to_char(instruction&0xF), token_to_char( instruction >>4));
+    //printf("instruct is %c%c\n",  token_to_char(instruction&0xF), token_to_char( instruction >>4));
 
     switch (instruction) {
 
@@ -439,8 +439,8 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotab
         printf("reached paropen\n");
         program* p1= instructToProg(curr->next->other);
 
-        free_prog(p1);
-       // appTable(table, mkMacroEntry(curr->next->symbol, instructToProg(curr->next->other)));
+      //  free_prog(p1);
+       appTable(table, mkMacroEntry(curr->next->symbol, p1));
 
         curr=curr->other;
         break;
@@ -449,15 +449,21 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotab
         printf("reached parclose\n");
       
         break;
-      
 
       /* not done yet */
 
         default: 
+          printf("placeholder default instruct\n");
+          program * tmpProg= findProg(table, instruction);
+          if(tmpProg){
+            exec_prgm(tmpProg, environment, stack, table);
+          }
          break;
     }
+
     OP_EXEC(curr, exec_direction);
   }
+
   environment->curindex=idx;
   return 0;
 }

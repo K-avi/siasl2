@@ -31,6 +31,8 @@ void sigint_handler( int sig){
     if(environment) free_mat(environment);
     if(stack) free_stack(stack);
 
+    if(table) free_table(table);
+
     yylex_destroy();
     printf("\n");
     exit (SIGINT);

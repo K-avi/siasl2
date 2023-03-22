@@ -13,7 +13,7 @@ typedef struct macroentry{
 }macroentry;
 
 typedef struct entryarray{ 
-    macroentry * entries ;
+    macroentry ** entries ;
 
     unsigned short currentries; 
     unsigned short maxentries;
