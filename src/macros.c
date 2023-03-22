@@ -141,12 +141,12 @@ void appTable ( macrotable * mtable, macroentry * entry){
 
     unsigned key= hashSymbol(entry->sym, mtable->size);
 
-    printf("key is %d , %p \n", key, mtable->table[key]);
+  //  printf("key is %d , %p \n", key, mtable->table[key]);
 
     if(! (mtable->table[key])) {
         mtable->table[key]=initArr(_ARRENT_DEF_SIZE);
     }
-     printf("key is %d , %p \n", key, mtable->table[key]);
+    // printf("key is %d , %p \n", key, mtable->table[key]);
     appArr(mtable->table[key], entry);
 
    // free_macroentry(entry);
@@ -174,14 +174,16 @@ program * findProg( macrotable * mtable, Symbol sym){
     if(!mtable) return NULL;
 
     unsigned key = hashSymbol(sym, mtable->size);
+    if(mtable->table[key]){
+        for (int i=0; i<mtable->table[key]->currentries; i++){
 
-    for (int i=0; i<mtable->table[key]->currentries; i++){
+            if(mtable->table[key]->entries[i]->sym==sym){
 
-        if(mtable->table[key]->entries[i]->sym==sym){
-
-            return mtable->table[key]->entries[i]->prog;
+                return mtable->table[key]->entries[i]->prog;
+            }
         }
     }
 
     return NULL;
 }//not tested 
+

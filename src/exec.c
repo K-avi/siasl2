@@ -436,7 +436,8 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotab
       /* functions (god have mercy on my soul)*/
 
       case INT_LPAR | ( INT_NEUT <<4):
-        printf("reached paropen\n");
+        if(exec_direction){
+       // printf("reached paropen\n");
         program* p1= instructToProg(curr->next->other);
 
       //  free_prog(p1);
@@ -444,20 +445,35 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotab
 
         curr=curr->other;
         break;
+        }else{
+         // printf("lpar curr ->prev %p\n", curr->prev);
+          break;
+        }
       
       case (INT_RPAR<<4) | INT_NEUT:
-        printf("reached parclose\n");
-      
+
+        if(exec_direction){
+          //printf("reached parclose\n");
+
+          
+        }else{
+        //  printf("parclose: %p\n", curr->other);
+          curr=curr->other;
+        }
         break;
+        
 
       /* not done yet */
 
-        default: 
-          printf("placeholder default instruct\n");
+      default: 
+       //   printf("placeholder default instruct %x\n", instruction);
+        if(1){
           program * tmpProg= findProg(table, instruction);
+          printf("tmprog is %p\n", tmpProg );
           if(tmpProg){
             exec_prgm(tmpProg, environment, stack, table);
           }
+        }
          break;
     }
 

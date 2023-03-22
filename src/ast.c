@@ -53,7 +53,7 @@ Symbol symbol_from_syllable( int tok1 , int  tok2){
   
 
      unsigned short i_tok1= bison_token_to_internal(tok1), i_tok2=bison_token_to_internal(tok2);
-     printf("in sym from syll %d %d %u %u\n", tok1, tok2, i_tok1 , i_tok2);
+  //   printf("in sym from syll %d %d %u %u\n", tok1, tok2, i_tok1 , i_tok2);
      if (i_tok1 > i_tok2) {
         Symbol ret= i_tok2 | ( i_tok1<<4);
         return ret;
