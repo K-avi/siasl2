@@ -8,6 +8,6 @@
 #include "parser.tab.h"
 #include "stack.h"
 
-extern void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned char mode);
+extern void interactive_interp( CELLMATRIX * environment, S_STACK * stack,unsigned char mode);
 
 #endif

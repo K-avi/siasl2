@@ -9,7 +9,7 @@
 
 
 extern program * prog;
-
+extern macrotable * table;
 
 char hexTObf( char hexChr ){
    /*
@@ -110,7 +110,7 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
          //parsed_to_int(prog);
  
          if(!syntax_err) {
-            exec_prgm(prog, environment, stack);
+            exec_prgm(prog, environment, stack, table);
             free_prog(prog);
          }
          progempty=1;    

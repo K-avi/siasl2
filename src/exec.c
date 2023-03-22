@@ -1,6 +1,7 @@
 #include "exec.h"
 #include "ast.h"
 #include "cells.h"
+#include "macros.h"
 #include "stack.h"
 
 #include <stdint.h>
@@ -12,9 +13,12 @@ int default_mult_div=2;
 
 #define OP_EXEC(progr, dir) if((dir)){ (progr)= (progr)->next ;} else{ (progr)= (progr)->prev ;}
 
-int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack) {
+int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotable * table) {
 
-  if(! (progr && environment && stack)) return -1;
+  if(! (progr && environment && stack && table)) {
+    printf("no table\n");
+    return -1;
+  }
   instruction* curr = progr->head;
 
   unsigned short stack_ptr = 0;
@@ -27,11 +31,13 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack) {
  
   
   char safe_getchar[256]; //used in read function to pass stuff safely
- 
+  
   uint32_t matsize= environment->size* environment->size;
   while (curr) {
     
     unsigned short instruction = curr->symbol;
+
+    printf("instruct is %c%c\n",  token_to_char(instruction&0xF), token_to_char( instruction >>4));
 
     switch (instruction) {
 
@@ -426,6 +432,24 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack) {
       case (INT_WILDCARD<<4) | INT_RIGHT: 
           exec_direction= 1;
           break;
+      
+      /* functions (god have mercy on my soul)*/
+
+      case INT_LPAR | ( INT_NEUT <<4):
+        printf("reached paropen\n");
+        program* p1= instructToProg(curr->next->other);
+
+        free_prog(p1);
+       // appTable(table, mkMacroEntry(curr->next->symbol, instructToProg(curr->next->other)));
+
+        curr=curr->other;
+        break;
+      
+      case (INT_RPAR<<4) | INT_NEUT:
+        printf("reached parclose\n");
+      
+        break;
+      
 
       /* not done yet */
 

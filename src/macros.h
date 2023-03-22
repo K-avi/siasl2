@@ -22,4 +22,6 @@ extern unsigned hashSymbol( Symbol sym, unsigned size);
 extern void appTable ( macrotable * mtable, macroentry * entry);
 extern program * findProg( macrotable * mtable, Symbol sym);
 
+extern program * instructToProg( instruction * instruct);
+
 #endif

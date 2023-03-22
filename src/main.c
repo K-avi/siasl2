@@ -22,7 +22,7 @@
 
 
 extern program * prog;
-extern macrotable * table;
+
 
 void sigint_handler( int sig){
     if(!progempty) {
@@ -108,26 +108,33 @@ int main(int argc, char ** argv){
     /*initialising environment and stack ; prog is initialised by parser.tab.c*/
     environment= init_mat(DEFAULT_ROWSIZE);
     stack= init_stack(STACK_SIZE);
+    table=init_table(_TABLE_DEF_SIZE, _ARRENT_DEF_SIZE);
+    
 
     if (cmdline_mode) {
 
         if(hexmode){
-            interactive_interp(environment, stack, 'x');
+            interactive_interp(environment, stack,'x');
 
             free_mat(environment);
             free_stack(stack);
+            free_table(table);
+
         }else if(simode){
 
-            interactive_interp(environment, stack, 's');
+            interactive_interp(environment, stack,'s');
 
             free_mat(environment);
             free_stack(stack);
+            free_table(table);
+
         }else{
             
             fprintf(stderr ,"mode is neiter symbol nor hexa; exiting\n");
 
             free_mat(environment);
             free_stack(stack);
+            free_table(table);
 
             exit(-2);
         }
@@ -184,7 +191,7 @@ int main(int argc, char ** argv){
         /*translating prog and executing*/
     
        // parsed_to_int(prog);
-        exec_prgm(prog, environment, stack);
+        exec_prgm(prog, environment, stack, table);
 
         /*freeing everything after exec*/
         free_mat(environment);

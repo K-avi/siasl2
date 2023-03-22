@@ -22,7 +22,7 @@ typedef struct entryarray{
 
 typedef struct macrotable{
     
-    entryarray * table;
+    entryarray ** table;
 
     unsigned short size;
     unsigned short arrsize;
@@ -69,7 +69,7 @@ extern void mergeInstruction( instruction * list1, instruction * list2);
 
 extern void free_instruct( instruction * list);
 
-enum { INT_NEUT=1 , INT_LEFT , INT_RIGHT, INT_UP , INT_DOWN , INT_PLUS, INT_MINUS, INT_MULT, 
-INT_DIV ,INT_READ, INT_PRINT, INT_LBRACKET, INT_RBRACKET, INT_WILDCARD };
+enum { INT_LPAR=0 , INT_NEUT , INT_LEFT , INT_RIGHT, INT_UP , INT_DOWN , INT_PLUS, INT_MINUS, INT_MULT, 
+INT_DIV ,INT_READ, INT_PRINT, INT_LBRACKET, INT_RBRACKET, INT_WILDCARD , INT_RPAR};
 
 #endif

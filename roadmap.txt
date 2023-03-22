@@ -42,3 +42,4 @@ parsing : defun should prolly return a tableentry
 
 in stmts or wrapper of it should happen stuff to a table initialised when beginning parsing 
 
+how will defun behave when u switch the flow of execution ????????????

@@ -1,4 +1,5 @@
 #include "ast.h"
+#include "parser.tab.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -37,6 +38,9 @@ int bison_token_to_internal( int token){
         case LBRACKET: return INT_LBRACKET; break;
         case RBRACKET: return INT_RBRACKET; break;
         case WILDCARD: return INT_WILDCARD ; break;
+        case LPAR : return INT_LPAR; break;
+        case RPAR: return INT_RPAR ; break;
+
         default: return INT_NEUT; 
         
     }
@@ -49,7 +53,7 @@ Symbol symbol_from_syllable( int tok1 , int  tok2){
   
 
      unsigned short i_tok1= bison_token_to_internal(tok1), i_tok2=bison_token_to_internal(tok2);
-     //printf("in sym from syll %d %d %u %u\n", tok1, tok2, i_tok1 , i_tok2);
+     printf("in sym from syll %d %d %u %u\n", tok1, tok2, i_tok1 , i_tok2);
      if (i_tok1 > i_tok2) {
         Symbol ret= i_tok2 | ( i_tok1<<4);
         return ret;
@@ -78,6 +82,8 @@ char token_to_char(int token){
     case INT_READ: return ','; break;
     case INT_PRINT: return '.'; break;
     case INT_WILDCARD: return '?'; break;
+    case INT_LPAR : return '('; break;
+    case INT_RPAR : return ')'; break;
     default : return 'x'; break;
     }
 

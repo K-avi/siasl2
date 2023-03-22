@@ -2,44 +2,25 @@
 #include "ast.h"
 #include <stdlib.h>
 
-macrotable * init_table( unsigned short size, unsigned arrsize){
+
+
+program * instructToProg( instruction * instruct){
     /*
-    initialises a table to store macro functions. 
-    returns null if any malloc fails so watch out for that.
+    turns a list of instructions into a valid prog.
     */
+    if (!instruct) return NULL;
 
-    macrotable * ret= (macrotable* ) malloc(sizeof(macrotable));
-    if(!ret) return NULL; 
+    program* ret= (program*) malloc(sizeof(program));
+    if(!ret) return NULL;
 
-    ret->table= (entryarray*) calloc(size , sizeof(entryarray));
-    if(!ret->table){
-        free(ret);
-        return NULL;
+    ret->head=instruct;
+
+    while(instruct->next){
+        instruct=instruct->next;
     }
-
-    ret->size=size;
-    ret->arrsize=arrsize;
-
+    ret->tail=instruct;
     return ret;
-}//not tested
-
-void free_entryarray ( entryarray * array){
-
-    if(!array) return;
-
-    if(array->entries)free(array->entries);
-    free(array);
-}
-
-void free_table( macrotable * mtable){
-    /*
-    frees a macrotable.
-    */
-    if(!mtable) return ;
-    free_entryarray(mtable->table);
-    free(mtable);
-}//not tested
-
+}//tested ; works 
 
 macroentry * mkMacroEntry ( Symbol sym, program * prog){
     /*
@@ -56,6 +37,18 @@ macroentry * mkMacroEntry ( Symbol sym, program * prog){
 
     return ret;
 }//not tested;
+
+
+void free_macroentry( macroentry * entry){
+    /*
+    frees a macroentry AND the program it contains.
+    */
+    if(!entry) return;
+
+    free_prog(entry->prog);
+    free(entry);
+}
+
 
 entryarray * initArr( int size){
     /*
@@ -77,6 +70,18 @@ entryarray * initArr( int size){
     return ret;
 }//not tested 
 
+void free_entryarray ( entryarray * array){
+
+    if(!array) return;
+
+    if(array->entries){
+        for(int i =0 ; i<array->currentries; i++){
+            free_prog(array->entries[i].prog);
+        }
+    }
+    free(array);
+}//not tested
+
 void appArr( entryarray * arr, macroentry * element){
     /*
     adds element to arr ; 
@@ -92,11 +97,40 @@ void appArr( entryarray * arr, macroentry * element){
 //doesnt handle realloc (does it need to though????)
 
 
-unsigned hashSymbol( Symbol sym, unsigned size){
-    if( !size) return 0;
+macrotable * init_table( unsigned short size, unsigned arrsize){
+    /*
+    initialises a table to store macro functions. 
+    returns null if any malloc fails so watch out for that.
+    */
 
-    return sym%size;
-}//not tested 
+    macrotable * ret= (macrotable* ) malloc(sizeof(macrotable));
+    if(!ret) return NULL; 
+
+    ret->table= (entryarray**) calloc(size , sizeof(entryarray*));
+    if(!ret->table){
+        free(ret);
+        return NULL;
+    }
+
+    ret->size=size;
+    ret->arrsize=arrsize;
+
+    return ret;
+}//tested ; works
+
+void free_table( macrotable * mtable){
+    /*
+    frees a macrotable.
+    */
+    if(!mtable) return ;
+    for(unsigned i=0; i <mtable->size; i++ ){
+        
+        free_entryarray(mtable->table[i]);
+    }
+    free(mtable->table);
+    free(mtable);
+}//not tested
+
 
 void appTable ( macrotable * mtable, macroentry * entry){
     /*
@@ -106,10 +140,21 @@ void appTable ( macrotable * mtable, macroentry * entry){
 
     unsigned key= hashSymbol(entry->sym, mtable->size);
 
-    appArr(&mtable->table[key], entry);
+    appArr(mtable->table[key], entry);
     
 }//not tested 
 //doesnt handle case where it's already defined! !!!!!!!!!!!!!
+
+
+
+
+
+unsigned hashSymbol( Symbol sym, unsigned size){
+
+    if( !size) return 0;
+
+    return sym%size;
+}//not tested 
 
 program * findProg( macrotable * mtable, Symbol sym){
     /*
@@ -121,11 +166,14 @@ program * findProg( macrotable * mtable, Symbol sym){
 
     unsigned key = hashSymbol(sym, mtable->size);
 
-    for (int i=0; i<mtable->table[key].currentries; i++){
-        if(mtable->table[key].entries[i].sym==sym){
-            return mtable->table[key].entries[i].prog;
+    for (int i=0; i<mtable->table[key]->currentries; i++){
+        if(mtable->table[key]->entries[i].sym==sym){
+            return mtable->table[key]->entries[i].prog;
         }
     }
 
     return NULL;
 }//not tested 
+
+
+

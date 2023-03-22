@@ -8,6 +8,7 @@
 
   #include "ast.h"
   #include "macros.h"
+  #include "globals.h"
 
   extern FILE* yyin;
   extern int yylex(void);
@@ -16,7 +17,7 @@
 
   struct program * prog;
 
-  struct macrotable * table;
+  extern struct macrotable * table;
   
 %}
 
@@ -33,15 +34,15 @@
 %token <token> PRINT READ LEFT RIGHT UP DOWN PLUS MINUS MULT DIV NEUTRAL WILDCARD LPAR RPAR
 %token <token> LBRACKET RBRACKET
 
-%type <instruction> stmts stmt loop
+%type <instruction> stmts stmt loop defun
 %type <token> syllable 
 %type <prog> program
 
-%type <sym> loop_start loop_end symbol 
+%type <sym> loop_start loop_end symbol funstart funend
 
 %start program
 
-%expect 43
+%expect 48
 
 
 %destructor { ; } <instruction>
@@ -49,14 +50,46 @@
 %%
 
 program
-  : stmts { prog=initProg(); table=init_table(_TABLE_DEF_SIZE, _ARRENT_DEF_SIZE); progMerge(prog, $1); }
+  : stmts { prog=initProg();  progMerge(prog, $1); }
 ;
 
 stmts
   : stmt        { $$ = $1; }
+  | defun       { $$=$1 ; }
   | stmts stmt  { mergeInstruction($$ = $1, $2); }
   | stmts error { free_instruct($1) ; $$=NULL; YYABORT; }
+  | stmts defun { mergeInstruction($$ = $1, $2);  }
 
+;
+
+defun 
+  : funstart symbol stmts funend {
+
+    $$=mkinstruction($1);
+    $$->next=mkinstruction($2);
+    $$->next->prev=$$;
+
+    $$->next->other=$3;
+    
+    $$->next->next=mkinstruction($4);
+
+    
+    $$->other=$$->next->next;
+
+    $$->other->prev=$$->next;
+
+    $$->other->other=$$;
+    }
+ 
+;
+
+funstart
+  : NEUTRAL LPAR { $$=symbol_from_syllable( $1, $2);}
+  | LPAR NEUTRAL {$$=symbol_from_syllable( $1, $2);}
+;
+funend 
+  : NEUTRAL RPAR {$$=symbol_from_syllable( $1, $2);}
+  | RPAR NEUTRAL {$$=symbol_from_syllable( $1, $2);}
 ;
 
 
