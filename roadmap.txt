@@ -14,6 +14,7 @@ SIASL :
     
     -will support defining behavior for symbols
     -might support redefining behavior for some existing symbols (oh boy!)
+        -> it won't 
 
 
 support to define behavior: 
@@ -36,16 +37,20 @@ parser support :
 test functions in macro.c ; 
 add non-default symbol support in exec
  
-figure out parsing of in bison
+figure out parsing of in bison : done
 
-parsing : defun should prolly return a tableentry 
+parsing : defun should prolly return a tableentry  : done
 
 in stmts or wrapper of it should happen stuff to a table initialised when beginning parsing 
+-> no; done differently
 
 how will defun behave when u switch the flow of execution ????????????
+-> it won't do shit that's what it'll do
 
+-handle redefinitions of symbols;
+-> think it works???
 
--handle redefinitions of symbols; 
--realloc in tables ; maybe used linked lists instead of dynamic arrays???
+-realloc in tables ; maybe use linked lists instead of dynamic arrays or handle reallocs
+-> done made them smaller and handle realloc 
 
 -update docu

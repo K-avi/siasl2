@@ -221,5 +221,5 @@ syllable
 
 void yyerror(const char* s) {
 
-  fprintf(stderr, "yyerr: %s\n", s);
+  fprintf(stderr, "error: %s\n", s);
 }

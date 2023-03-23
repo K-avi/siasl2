@@ -13,14 +13,14 @@ int default_mult_div=2;
 
 #define OP_EXEC(progr, dir) if((dir)){ (progr)= (progr)->next ;} else{ (progr)= (progr)->prev ;}
 
-int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotable * table) {
+int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotable * table, unsigned char * printcheck) {
 
   if(! (progr && environment && stack && table)) {
     printf("no table\n");
     return -1;
   }
   instruction* curr = progr->head;
-
+  
   unsigned short stack_ptr = 0;
   
  // int length= environment->size;
@@ -70,7 +70,7 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotab
             }
             break;
 
-        case (INT_PRINT<<4) | INT_NEUT: printf("%c", environment->mat[idx]); break;
+        case (INT_PRINT<<4) | INT_NEUT: printf("%c", environment->mat[idx]); if(printcheck)*printcheck=1; break;
 
         case (INT_LBRACKET <<4 ) | INT_NEUT :
             if(exec_direction){
@@ -153,11 +153,11 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotab
 
       /* print formats */
 
-      case (INT_PRINT<<4) | INT_PLUS: printf("%d", environment->mat[idx]); break;
-      case (INT_PRINT<<4) | INT_MINUS: printf("%x", environment->mat[idx]); break;
-      case (INT_PRINT<<4) | INT_MULT: printf("%o", environment->mat[idx]); break;
-      case (INT_PRINT<<4) | INT_DIV: printf("%u", (unsigned) environment->mat[idx]); break;
-      case INT_PRINT | (INT_WILDCARD <<4)  : printf("%.2f", (float) environment->mat[idx]); break;
+      case (INT_PRINT<<4) | INT_PLUS: printf("%d", environment->mat[idx]); if(printcheck)*printcheck=1; break;
+      case (INT_PRINT<<4) | INT_MINUS: printf("%x", environment->mat[idx]);if(printcheck)*printcheck=1; break;
+      case (INT_PRINT<<4) | INT_MULT: printf("%o", environment->mat[idx]); if(printcheck)*printcheck=1;break;
+      case (INT_PRINT<<4) | INT_DIV: printf("%u", (unsigned) environment->mat[idx]); if(printcheck)*printcheck=1;break;
+      case INT_PRINT | (INT_WILDCARD <<4)  : printf("%.2f", (float) environment->mat[idx]);if(printcheck)*printcheck=1; break;
 
       /* loop variations */
 
@@ -438,10 +438,26 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotab
       case INT_LPAR | ( INT_NEUT <<4):
         if(exec_direction){
        // printf("reached paropen\n");
-        program* p1= instructToProg(curr->next->other);
+        
 
       //  free_prog(p1);
-       appTable(table, mkMacroEntry(curr->next->symbol, p1));
+        program * checkPresence = findProg(table, curr->next->symbol);
+        if(checkPresence){
+          
+          program *p1= instructToProg(curr->next->other);
+          struct instruction * Instruct= checkPresence->head;
+
+          checkPresence->head=p1->head; 
+          checkPresence->tail=p1->tail;
+
+          free(p1);
+          free_instruct(Instruct);
+
+
+        }else{
+          program* p1= instructToProg(curr->next->other);
+          appTable(table, mkMacroEntry(curr->next->symbol, p1));
+        }
 
         curr=curr->other;
         break;
@@ -469,9 +485,9 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotab
        //   printf("placeholder default instruct %x\n", instruction);
         if(1){
           program * tmpProg= findProg(table, instruction);
-          printf("tmprog is %p\n", tmpProg );
+          //printf("tmprog is %p\n", tmpProg );
           if(tmpProg){
-            exec_prgm(tmpProg, environment, stack, table);
+            exec_prgm(tmpProg, environment, stack, table, printcheck);
           }
         }
          break;

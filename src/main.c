@@ -193,7 +193,8 @@ int main(int argc, char ** argv){
         /*translating prog and executing*/
     
        // parsed_to_int(prog);
-        exec_prgm(prog, environment, stack, table);
+        unsigned char printcheck;
+        exec_prgm(prog, environment, stack, table , &printcheck);
 
         /*freeing everything after exec*/
         free_mat(environment);

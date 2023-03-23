@@ -91,9 +91,16 @@ void appArr( entryarray * arr, macroentry * element){
     be carefull with that
     */
     if(! (arr && element)) return;
+    
+    if(arr->currentries==arr->maxentries){
+      
+        arr->entries= (macroentry**)realloc( arr->entries, 4 * sizeof(macroentry*));
+        arr->maxentries+=4;
+    }
+   
     arr->entries[arr->currentries] = element;
-
     arr->currentries++;
+
 }//not tested
 //doesnt handle realloc (does it need to though????)
 
@@ -186,4 +193,3 @@ program * findProg( macrotable * mtable, Symbol sym){
 
     return NULL;
 }//not tested 
-
