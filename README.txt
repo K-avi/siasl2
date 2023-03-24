@@ -13,3 +13,19 @@ Some instruction/symbols  are predefined and are immutable some other can be use
 
 To learn more about how (SIASL)² works and how to write (SIASL)² programs; please check out the 
 docu/docu.html file.
+
+To compile the (SIASL)² interpreter you'll need flex, bison ,gcc and make.
+
+once compiler the (SIASL)² interpreter can be called with arguments : 
+
+-c loads the command line interactive interpreter 
+-s starts (SIASL)² with bf-like symbol lexic.
+-f reads a program from a file
+-h prints out help 
+-x starts (SIASL)² with hexadecimal lexic instead of normal bf-like symbols
+
+the default behavior of siasl2 when executed is to load the command line interpreter with the 
+bf-like lexic (-sc)
+
+If you call siasl with mutually exclusive options (like -sx) , the LAST one passed will be the 
+one used at runtime.
