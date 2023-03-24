@@ -123,7 +123,7 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
 
         if(printcheck){
          printf("\n>>> ");
-       
+         printcheck=0;
         }else{
          printf(">>>");
          lprint=0;

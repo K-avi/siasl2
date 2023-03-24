@@ -151,6 +151,7 @@ void insertTail( program * prog, instruction * newT){
 
 void free_prog (program * prog){
     /*
+    if error handler is set, will free the potential instruction * from a defun type statement.
     */
     if(!prog) return;
 
@@ -158,6 +159,7 @@ void free_prog (program * prog){
 
     while(tmp1){
         tmp2=tmp2->next; 
+
         free(tmp1);
 
         tmp1=tmp2;

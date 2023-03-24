@@ -42,7 +42,7 @@
 
 %start program
 
-%expect 48
+%expect 42
 
 
 %destructor { ; } <instruction>
@@ -198,6 +198,14 @@ symbol
   | LBRACKET WILDCARD {$$=symbol_from_syllable($1 , $2);}
   | WILDCARD LBRACKET {$$=symbol_from_syllable($1 , $2);}
 
+  | LPAR syllable {$$=symbol_from_syllable( $1, $2);}
+  | syllable LPAR {{$$=symbol_from_syllable( $2, $1);}}
+  | RPAR syllable {$$=symbol_from_syllable( $2, $1);}
+  | syllable RPAR {$$=symbol_from_syllable( $2, $1);}
+
+  | NEUTRAL syllable {$$=symbol_from_syllable( $2, $1);};
+  | syllable NEUTRAL {$$=symbol_from_syllable( $2, $1);}
+
   | syllable {$$=symbol_from_syllable( NEUTRAL, $1);}
 ;
 
@@ -212,7 +220,6 @@ syllable
   | MINUS
   | MULT
   | DIV
-  | NEUTRAL
   | WILDCARD
 ;
 

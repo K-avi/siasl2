@@ -136,7 +136,7 @@ int checkDefaultSymbol(Symbol sym){
 int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotable * table, unsigned char * printcheck) {
 
   if(! (progr && environment && stack && table)) {
-    printf("no table\n");
+    //printf("%p %p %p %p\n", progr, environment, stack, table);
     return -1;
   }
   instruction* curr = progr->head;
