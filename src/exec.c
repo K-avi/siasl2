@@ -8,8 +8,128 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 int default_mult_div=2;
+
+int checkDefaultSymbol(Symbol sym){
+  /*
+  returns 1 if sym is a default sym 0 otherwise
+  */
+  if( (sym & INT_NEUT)==INT_NEUT ){
+    switch (sym) {
+
+          case (INT_LEFT<<4)| INT_NEUT: return 1; break;
+          case (INT_RIGHT<<4)| INT_NEUT: return 1; break;
+          case (INT_UP<<4)| INT_NEUT: return 1; break;
+          case (INT_DOWN<<4) | INT_NEUT : return 1; break;
+          case (INT_PLUS<<4) | INT_NEUT: return 1; break;
+          case(INT_MINUS <<4) | INT_NEUT: return 1; break;
+          case (INT_MULT <<4) | INT_NEUT : return 1; break;
+          case (INT_DIV <<4) | INT_NEUT: return 1; break;
+          case (INT_READ<<4 )| INT_NEUT : return 1; break;
+          case (INT_PRINT<<4) | INT_NEUT: return 1; break;
+          case (INT_LBRACKET <<4 ) | INT_NEUT : return 1; break;
+          case (INT_RBRACKET <<4) | INT_NEUT : return 1; break;
+          case (INT_RPAR<<4) | INT_NEUT: return 1; break;
+
+          default: return 0;  break;
+    }
+  }else if((sym & INT_PLUS)==INT_PLUS){
+            
+      switch (sym) {
+
+      
+      case (INT_PLUS <<4) | INT_PLUS : return 1; break;
+      case (INT_PRINT<<4) | INT_PLUS: return 1; break;
+      case (INT_LBRACKET <<4 ) | INT_PLUS : return 1; break;
+      case (INT_RBRACKET <<4) | INT_PLUS : return 1; break;
+      default: return 0;  break;
+      }
+  }else if ((sym & INT_PLUS<<4)== (INT_PLUS<<4)){
+
+      switch (sym){
+
+        case INT_RIGHT | (INT_PLUS<<4) : return 1; break;
+        case INT_LEFT | (INT_PLUS<<4) : return 1; break;
+        case INT_UP | (INT_PLUS<<4) : return 1; break;
+        case INT_DOWN | (INT_PLUS<<4) : return 1; break;
+      
+        default: return 0;  break;
+      }
+  }else if( ((sym & (INT_MINUS <<4))) == ((INT_MINUS<<4))){
+     
+     switch (sym) {
+
+        case INT_RIGHT | (INT_MINUS<<4) : return 1; break;
+        case INT_LEFT | (INT_MINUS<<4) : return 1; break;
+        case INT_UP | (INT_MINUS<<4) : return 1; break;
+        case INT_DOWN | (INT_MINUS<<4) : return 1; break;
+        case (INT_MINUS <<4) | INT_MINUS: return 1; break;
+        default: return 0;  break;
+      }
+  }else if (  (sym & (INT_MULT<<4))== (INT_MULT<<4) ){
+
+      switch (sym) {
+     
+        case INT_RIGHT | (INT_MULT<<4) :return 1; break;
+        case INT_LEFT | (INT_MULT<<4) :return 1; break;
+        case INT_UP | (INT_MULT<<4) : return 1; break;
+        case INT_DOWN | (INT_MULT<<4) : return 1; break;
+        case (INT_MULT <<4) | INT_MULT : return 1; break;
+        default: return 0;  break;
+      }
+  }else if( ((sym & (INT_LBRACKET<<4))== (INT_LBRACKET<<4)) || ((sym & (INT_RBRACKET<<4))== (INT_RBRACKET<<4))){
+    
+      switch (sym) {
+
+        case (INT_LBRACKET <<4 ) | INT_MINUS : return 1; break;
+        case (INT_RBRACKET <<4) | INT_MINUS :return 1; break;
+        case (INT_LBRACKET <<4 ) | INT_LEFT : return 1; break;
+        case (INT_RBRACKET <<4) | INT_LEFT : return 1; break;
+        
+        case (INT_LBRACKET <<4 ) | INT_RIGHT: return 1; break;
+        case (INT_RBRACKET <<4) | INT_RIGHT :return 1; break;
+        case (INT_LBRACKET <<4 ) | INT_UP : return 1; break;
+        case (INT_RBRACKET <<4) | INT_UP : return 1; break;
+        
+        case (INT_LBRACKET <<4 ) | INT_DOWN : return 1; break;
+        case (INT_RBRACKET <<4) | INT_DOWN : return 1; break;
+
+        default: return 0;  break;  
+      }
+  }else{
+
+    switch (sym) {
+
+      case INT_RIGHT | (INT_DIV<<4) : return 1; break;
+      case INT_LEFT | (INT_DIV<<4) :return 1; break;
+      case INT_UP | (INT_DIV<<4) : return 1; break;
+      case INT_DOWN | (INT_DIV<<4) : return 1; break;
+      case (INT_DIV <<4) | INT_DIV : return 1; break; 
+
+
+      case (INT_DOWN<<4)| INT_DOWN: return 1; break; //goes to first cell 
+      case (INT_UP<<4)| INT_UP : return 1; break;; //goes to last cell 
+      case (INT_LEFT<<4)| INT_LEFT : return 1; break; //goes to first cell in line
+      case (INT_RIGHT<<4)| INT_RIGHT : return 1; break;
+     
+      case (INT_PRINT<<4) | INT_MINUS: return 1; break;
+      case (INT_PRINT<<4) | INT_MULT: return 1; break;
+      case (INT_PRINT<<4) | INT_DIV: return 1; break;
+      case INT_PRINT | (INT_WILDCARD <<4)  : return 1; break;
+
+      case (INT_WILDCARD<<4) | INT_READ : return 1; break;
+      case (INT_WILDCARD<<4) | INT_LEFT: return 1; break;
+      case (INT_WILDCARD<<4) | INT_RIGHT:  return 1; break;
+      case INT_LPAR | ( INT_NEUT <<4): return 1; break;
+      
+      default: return 0; break;
+    }
+  } 
+   
+  return 0;
+}
 
 #define OP_EXEC(progr, dir) if((dir)){ (progr)= (progr)->next ;} else{ (progr)= (progr)->prev ;}
 
@@ -432,38 +552,41 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotab
       case (INT_WILDCARD<<4) | INT_RIGHT: 
           exec_direction= 1;
           break;
-      
-      /* functions (god have mercy on my soul)*/
-
+   
       case INT_LPAR | ( INT_NEUT <<4):
+      
         if(exec_direction){
-       // printf("reached paropen\n");
-        
+         
+          if(!checkDefaultSymbol(curr->next->symbol)){
 
-      //  free_prog(p1);
-        program * checkPresence = findProg(table, curr->next->symbol);
-        if(checkPresence){
-          
-          program *p1= instructToProg(curr->next->other);
-          struct instruction * Instruct= checkPresence->head;
+            program * checkPresence = findProg(table, curr->next->symbol);
+            if(checkPresence){
+              
+              program *p1= instructToProg(curr->next->other);
+              struct instruction * Instruct= checkPresence->head;
 
-          checkPresence->head=p1->head; 
-          checkPresence->tail=p1->tail;
+              checkPresence->head=p1->head; 
+              checkPresence->tail=p1->tail;
 
-          free(p1);
-          free_instruct(Instruct);
+              free(p1);
+              free_instruct(Instruct);
 
 
-        }else{
-          program* p1= instructToProg(curr->next->other);
-          appTable(table, mkMacroEntry(curr->next->symbol, p1));
-        }
+            }else{
+            
+              program* p1= instructToProg(curr->next->other);
+              appTable(table, mkMacroEntry(curr->next->symbol, p1));
+            }
+          }else{
+   
+            free_instruct(curr->next->other);
+          }
 
-        curr=curr->other;
-        break;
-        }else{
-         // printf("lpar curr ->prev %p\n", curr->prev);
+          curr=curr->other;
           break;
+          }else{
+          // printf("lpar curr ->prev %p\n", curr->prev);
+            break;
         }
       
       case (INT_RPAR<<4) | INT_NEUT:
@@ -471,15 +594,12 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotab
         if(exec_direction){
           //printf("reached parclose\n");
 
-          
+
         }else{
         //  printf("parclose: %p\n", curr->other);
           curr=curr->other;
         }
         break;
-        
-
-      /* not done yet */
 
       default: 
        //   printf("placeholder default instruct %x\n", instruction);

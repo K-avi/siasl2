@@ -168,8 +168,8 @@ void appTable ( macrotable * mtable, macroentry * entry){
 unsigned hashSymbol( Symbol sym, unsigned size){
 
     if( !size) return 0;
-
-    return sym%size;
+    unsigned hash= sym + (sym>>4) * 3;
+    return hash%size;
 }//not tested 
 
 program * findProg( macrotable * mtable, Symbol sym){

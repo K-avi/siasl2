@@ -11,8 +11,7 @@
 
 %%
 
-[\t\n]+    { ; }
-" "         { return TOKEN(NEUTRAL); }
+[ \t\n]+    { ; }
 "."         { return TOKEN(PRINT); }
 ","         { return TOKEN(READ); }
 ">"         { return TOKEN(RIGHT); }

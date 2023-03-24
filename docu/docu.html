@@ -33,7 +33,14 @@
                                     <li><a href="#p35">5: Misc Instructions</a></li>                                                                  
                                 </ul>
                             </li>
-                            <li><a href="#p4"> IV: Settable instructions</a></li>
+                            <li>
+                                <a href="#p4">IV: Settable instructions</a>
+                                <ul>
+                                    <li><a href="#p41">1: Presentation</a></li>
+                                    <li><a href="#p42">2: Behavior specificity</a></li>
+                                                                                                    
+                                </ul>
+                            </li>
                             <li><a href="#p5"> V: Hexsiasl </a></li>
                         </ul>                
             </div>
@@ -42,7 +49,7 @@
             <h2><u>I: Introduction:</u></h2>
             <p>
                 (SIASL)² is an <a href=https://esolangs.org/wiki/Esoteric_programming_language>Esolang</a>
-                It belongs to <a href="https://esolangs.org/wiki/Turing_tarpit">Turing tarpit</a> family of languages.
+                It belongs to the <a href="https://esolangs.org/wiki/Turing_tarpit">Turing tarpit</a> family of languages.
                 and takes inspiration to the most famous one <a href=" https://esolangs.org/wiki/Brainfuck">Brainfuck</a>.
                 The most simple way to descripe it would be as some sort of 2d <a href=" https://esolangs.org/wiki/Brainfuck">Brainfuck</a>.
                 see <a href="https://esolangs.org/wiki/Generic_2D_Brainfuck">Generic 2D Brainfuck</a> and <a href="https://esolangs.org/wiki/2DFuck">2DFuck</a>
@@ -63,13 +70,13 @@
             <h2><u>II: Environment</u></h2>
             <br/>
             <div id="p21">
-                <h4><em>II.1: how is the (SIASL)² environment represented?</em>
-                </h4>
+                <h4><em>II.1: how is the (SIASL)² environment represented?</em></h4>
                 <p class="text-left">
-                    similarly to brainfuck ; (SIASL)² operates on memory cell. However they take the form 
-                    of a square matrix instead of a simple array ; allowing for movement in 4 directions instead of two. 
+                    similarly to brainfuck ; (SIASL)² does operation on cells containing numbers. However the structure containing 
+                    these cells is a square matrix an array. This allows movement in 4 directions instead of two. 
                     ( < , > , v , ^ ) related operations.
-                    Each cell contains a signed integer. It's value can be modifier by a lot of different operations. 
+                    
+                    Each cell contains a signed integer. It's value can be modified by a lot of different operations. 
                     When reaching the end of a "line" and trying to go to the right the data pointer will be move to the next one. 
                     Similar behavior occurs when reaching the start and trying to go to the left or when reaching the 
                     first/last line of the matrix and going up or down.
@@ -92,7 +99,7 @@
                 <p>
                     instruction containing a <code>&sharp;</code> are very similar to traditionnal Brainfuck instruction. 
                     They are simple and straightforward operations. I call them the "default" family of instruction.
-                    PS: to make programs easier to read <code>&sharp;</code> and space are equivalent. 
+                    
                 </p> 
                 <table class="table table-bordered table-light">
                     <tbody>
@@ -437,7 +444,7 @@
                 <h4> <em> III.4: Meta Instructions </em> </h4>
                 <p>
                     (SIASL)² supports a number of instructions that modify the effects
-                    of other instructions and/or the way the language behavesand can thus 
+                    of other instructions and/or the way the language behaves and can thus 
                     be seen as "meta instructions"
                 </p> 
                 <table class="table table-bordered table-light">
@@ -487,19 +494,21 @@
                         <tr>
                             <td style="text-align:center"><code>(&sharp;</code></td>
                             <td>
-                                the <code>(&sharp;</code> will be the key feature of 
-                                the next release of (SIASL)² and will allow to 
-                                define behavior for unused instructions.
-                                However it's not implemented at the moment.
+                                the <code>(&sharp;</code> combined with <code>&sharp;)</code> allows 
+                                to define behavior for unused symbols. The syntax to use them is :
+                                <code>(&sharp;</code> [symbol] [symbols] <code>&sharp;)</code>
+                                Once this expression has been evaluated [symbol] will be replaced by 
+                                [symbols] when evaluated
                             </td>
                         </tr>
                         <tr>
                             <td style="text-align:center"><code>&sharp;)</code></td>
                             <td>
-                                the <code>&sharp;)</code> will be the key feature of 
-                                the next release of (SIASL)² and will allow to 
-                                define behavior for unused instructions.
-                                However it's not implemented at the moment.
+                                the <code>&sharp;)</code> combined with <code>&sharp;)</code> allows 
+                                to define behavior for unused symbols. The syntax to use them is :
+                                <code>(&sharp;</code> [symbol] [symbols] <code>&sharp;)</code>
+                                Once this expression has been evaluated [symbol] will be replaced by 
+                                [symbols] when evaluated
                             </td>
                         </tr>
                     </tbody>
@@ -509,7 +518,7 @@
                 <h4> <em> III.5: Misc Instructions </em> </h4>
                 <p>
                     (SIASL)² supports other instructions. They are regrouped in this category 
-                    since they don't fit in any other one. These instructions are grouped into two familed; 
+                    since they don't fit in any other one. These instructions are grouped into two families; 
                     the "print formatters" and the "movement" instructions.
                 </p> 
                 <table class="table table-bordered table-light">
@@ -522,7 +531,7 @@
                             <td style="text-align:center"><code>.+</code></td>
                             <td>
                                 prints the value stored in the current 
-                                cell as an decimal integer
+                                cell as a signed decimal integer
                             </td>
                         </tr>
                         <tr>
@@ -585,23 +594,92 @@
         <div id="p4">
             <h2><u>IV: Settable Instructions</u></h2>
             <br/>
+            <div id="p41">
+            <h4><em>IV.1: Presentation</em></h4>
             <p>
                 (SIASL)² allows you to define behavior for every unused symbol/instruction 
                 (a symbol/instruction being two (SIASL)² characters). As for regular instructions; 
                 definable ones are commutative; which means that 
                 <code>?+</code> is the same thing as <code>+?</code>.
-                <hr/>
+                <br/>
                 At the start of (SIASL)² none of the unused symbols has an effect. 
-                To define them; one can use (# and #). 
-                <hr/>
-                The syntax for (# and #) is : 
+                To define them you can use (# and #). 
+                <br/>
+                The syntax for symbol definition is : 
                 (# [unused symbol] [instructions that define new behavior of the unused symbol] #).
-                <hr/>
-                I will not write all of them down but combination of symbol not mentionned in the 
-                previous parts is a definable symbol. 
-                <hr/>
-                NB: THIS IS NOT IMPLEMENTED YET
+                <br/>
+                Once an expression of this form has been evaluated , [unused symbol] will be replaced 
+                by the instructions after it when evaluating it.
+
+                I will not write all of them down but EVERY symbol that ISN'T documented is settable. 
+
             </p>
+            </div>
+            <div id="p42">
+                <h4><em>IV.2: Behavior specificity</em></h4>
+                The redefinition of symbols has specific behavior in certain cases. This 
+                section exists to describe this behavior.
+                <p>
+                <ul>
+                <li>symbol defining is NOT compatible with the <code>&lt;?</code> operators. 
+                When flow of execution is reversed, redefinition statements are skipped.</li>
+                <li>trying to define a symbol with itself for exemple: (#????#) will cause a stack
+                overflow.</li>
+                <li>Similarly if the definition of 2 or more symbols mutualy relies on eachother 
+                    trying to evaluate them will cause a stack overflow.
+                    <br/><br/>
+                    exemple: 
+                        (#??..#)
+                        <br/>
+                        (#..??#)<br/>
+                        <br/>
+                    calling ?? or .. will cause a stack overflow as their definition relies on 
+                    the other ones definition. This exemple is simple but a more complex case could 
+                    be found easily with 3 or more symbols.
+                </li>
+                <li>when defining a symbol with another unused symbol, for exemple : 
+                    (#??..#) the behavior of ?? will change if you redefine .. later.
+                    <br/><br/>
+                    exemple: 
+                        (#??..#)<br/>
+                        ??<br/>
+                        (#..+#.+#)<br/>
+                        ??<br/>
+                        <br/>
+                    here the first ?? will not do anything; but after the redefinition of .. 
+                    it will increment the current cell and print it as an integer.
+                    A more formal description of this would be to say that the (SIASL)² environment is 
+                    dynamic instead of static.
+                </li>
+                <li>once a symbol is defined, you can redefine it. It's behavior will be the one of 
+                    the last definition. 
+                    <br/><br/>
+                    exemple: 
+                        (#??#-#<#)<br/>
+                        ??<br/>
+                        (#??.+#)<br/>
+                        ??<br/><br/>
+                    the first call to ?? will substract 1 from the current cell and go to the cell on the left
+                    the second one will print the value of the current cell as an integer.
+                </li>
+
+                <li>you can use symbol definition "recursively"
+                    <br/><br/>
+                    exemple:<br/> 
+                        (#??(#..>#**#v#)#)<br/>
+                        <br/>
+                    is a valid definition of ??.
+                    When interpreted the definition of .. is not 
+                    evaluated before ?? is called. Which means that .. will 
+                    keep it's default (or previously defined behavior) until 
+                    ?? is called.
+
+                </li>
+
+                </ul>
+                </p>
+
+            </div>
         </div>
         <br/><hr/><br/>
         <div id="p5">
@@ -618,6 +696,10 @@
                         <tr>
                             <th>Symbol</th>
                             <th>Number</th>
+                        </tr>
+                        <tr>
+                            <td><code>(</code></td>
+                            <td>0</td>
                         </tr>
                         <tr>
                             <td><code>&sharp;</code></td>
@@ -674,6 +756,10 @@
                         <tr>
                             <td><code>?</code></td>
                             <td>e and E</td>
+                        </tr>
+                        <tr>
+                            <td><code>)</code></td>
+                            <td>f and F</td>
                         </tr>
                     </tbody>
                 </table>

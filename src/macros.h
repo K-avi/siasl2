@@ -5,8 +5,8 @@
 #include "ast.h"
 
 
-#define _TABLE_DEF_SIZE 16
-#define _ARRENT_DEF_SIZE 8
+#define _TABLE_DEF_SIZE 12
+#define _ARRENT_DEF_SIZE 6
 
 extern macrotable * init_table( unsigned short size, unsigned arrsize);
 

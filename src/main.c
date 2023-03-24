@@ -8,16 +8,13 @@
 
 #include "lex.yy.h"
 #include "parser.tab.h"
-
 #include "lex.hh.h"
-
 
 #include <ctype.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
-
 #include <signal.h>
 
 
@@ -101,17 +98,13 @@ int main(int argc, char ** argv){
     if(helpset){
 
         printf("(SIASL)² is a brainfuck like esolang; the options available are:\n-f to read a file\n-c to use the command line interactive interpret\n-x to use the interpreter in hex mode;\n-s to use the interpreted in symbol mode\nmore informations on the (SIASL)² language can be found in the README.txt and docu/docu.html files.\n"); 
-
         exit(0);
-
     }
-
     
     /*initialising environment and stack ; prog is initialised by parser.tab.c*/
     environment= init_mat(DEFAULT_ROWSIZE);
     stack= init_stack(STACK_SIZE);
     table=init_table(_TABLE_DEF_SIZE, _ARRENT_DEF_SIZE);
-    
 
     if (cmdline_mode) {
 

@@ -13,6 +13,3 @@ Some instruction/symbols  are predefined and are immutable some other can be use
 
 To learn more about how (SIASL)² works and how to write (SIASL)² programs; please check out the 
 docu/docu.html file.
-
-This version of (SIASL)² isn't finished because it doesn't implement the (# and #) operators.
-They will be implemented in the next version of the language.
