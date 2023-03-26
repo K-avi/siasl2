@@ -113,8 +113,7 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
          //parsed_to_int(prog);
  
          if(!syntax_err) {
-            
-            
+
             exec_prgm(prog, environment, stack, table, &printcheck);
             free_prog(prog);
          }
@@ -122,6 +121,9 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
          yylex_destroy();
 
         if(printcheck){
+         printf("\n>>> ");
+         printcheck=0;
+        }else if(syntax_err){
          printf("\n>>> ");
          printcheck=0;
         }else{

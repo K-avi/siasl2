@@ -25,7 +25,7 @@
 %union {
   struct instruction* instruction;
   int token;
-
+  
   unsigned short sym;
 
   struct program * prog;
@@ -227,5 +227,5 @@ syllable
 
 void yyerror(const char* s) {
 
-  fprintf(stderr, "error: %s\n", s);
+  fprintf(stderr, "%s :\n", s);
 }

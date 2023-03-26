@@ -31,6 +31,6 @@
 "("         { return TOKEN(LPAR); }
 ")"         { return TOKEN(RPAR); }
 "?"         { return TOKEN(WILDCARD); }
-.           { ; }
+
 
 %%
