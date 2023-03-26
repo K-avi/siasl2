@@ -16,7 +16,10 @@ docu/docu.html file.
 
 To compile the (SIASL)² interpreter you'll need flex, bison ,gcc and make.
 
-once compiler the (SIASL)² interpreter can be called with arguments : 
+If you have all of these installed on your computer simply type 
+"make siasl2" in the siasl2 directory to copile the interpreter.
+
+once compiled the siasl2 interpreter can be called with arguments : 
 
 -c loads the command line interactive interpreter 
 -s starts (SIASL)² with bf-like symbol lexic.
