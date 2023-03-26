@@ -9,15 +9,10 @@ LEX := flex
 LFLAGS :=
 
 YACC := bison
-YFLAGS := -d -v
+YFLAGS := -d 
 SRCS := exec.c ast.c cells.c stack.c globals.c cmdline_interp.c macros.c
 
 all: $(TARGET)
-
-debug: CFLAGS += -DDEBUG -g
-debug: LFLAGS += --debug
-debug: YFLAGS += --debug
-debug: $(TARGET)
 
 $(TARGET): lex.yy.c parser.tab.c lex.hh.c $(SRCS) main.c
 	$(CC) $(CFLAGS) $^ -o $(TARGET) $(CLIBS)

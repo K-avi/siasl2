@@ -13,6 +13,8 @@
 %%
 
 [ \t\n]+    { ; }
+\{(.|[\r\n])*?\} {;}
+
 "0"			{fprintf(hhout, "#");}
 "1"			{fprintf(hhout, "#");}
 "2"			{fprintf(hhout, "<");}
@@ -29,7 +31,7 @@
 "d"|"D"		{fprintf(hhout, "]");}
 "e"|"E"		{fprintf(hhout, "?");}
 "f"|"F"		{fprintf(hhout, "#");}
-.           { ; }
+
 
 %%
 

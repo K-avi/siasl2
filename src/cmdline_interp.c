@@ -109,8 +109,6 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
             syntax_err= yyparse(); 
          }
          
-
-         //parsed_to_int(prog);
  
          if(!syntax_err) {
 

@@ -31,7 +31,7 @@
   struct program * prog;
 }
 
-%token <token> PRINT READ LEFT RIGHT UP DOWN PLUS MINUS MULT DIV NEUTRAL WILDCARD LPAR RPAR 
+%token <token> PRINT READ LEFT RIGHT UP DOWN PLUS MINUS MULT DIV NEUTRAL WILDCARD LPAR RPAR INVALID_CHAR
 %token <token> LBRACKET RBRACKET
 
 %type <instruction> stmts stmt loop defun
@@ -48,9 +48,14 @@
 
 %%
 
+
+
 program
   : stmts { prog=initProg();  progMerge(prog, $1); }
+  | %empty { ; }
 ;
+
+
 
 
 stmts
@@ -227,5 +232,5 @@ syllable
 
 void yyerror(const char* s) {
 
-  fprintf(stderr, "%s :\n", s);
+  fprintf(stderr, "error: %s", s);
 }
