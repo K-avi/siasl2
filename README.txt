@@ -27,5 +27,5 @@ once compiler the (SIASL)² interpreter can be called with arguments :
 the default behavior of siasl2 when executed is to load the command line interpreter with the 
 bf-like lexic (-sc)
 
-If you call (SIASL))² with mutually exclusive options (like -sx) , the LAST one passed will be the 
+If you call (SIASL)² with mutually exclusive options (like -sx) , the LAST one passed will be the 
 one used at runtime.

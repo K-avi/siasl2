@@ -32,6 +32,8 @@
 "e"|"E"		{fprintf(hhout, "?");}
 "f"|"F"		{fprintf(hhout, "#");}
 
+. 			{ fprintf(hhout, "X");}
+
 
 %%
 

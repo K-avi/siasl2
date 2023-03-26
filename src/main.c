@@ -20,7 +20,6 @@
 
 extern program * prog;
 
-
 void sigint_handler( int sig){
     if(!progempty) {
         free_prog(prog);
@@ -42,10 +41,7 @@ int main(int argc, char ** argv){
     signal(SIGINT, *sigint_handler );
 
     unsigned char cmdline_mode=1, file_mode=0;
-
     unsigned char simode=1 , hexmode=0;
-
-
     unsigned char helpset=0;
 
     char* filename = NULL;
@@ -140,10 +136,21 @@ int main(int argc, char ** argv){
 
             if(hexmode){
 
-                char* tmpfile_name= malloc(strnlen(filename, 256)+5);
-                sprintf(tmpfile_name, "%s.tmp", filename);
+                
 
                 FILE * fsource =fopen(filename, "r");
+                if(!fsource){
+                    
+                    free_mat(environment);
+                    free_stack(stack);
+                    free_table(table);
+
+                    fprintf(stderr, "Could not open file : exiting \n");
+                    return -1;
+                }
+
+                char* tmpfile_name= malloc(strnlen(filename, 256)+5);
+                sprintf(tmpfile_name, "%s.tmp", filename);
                 FILE * fdest = fopen(tmpfile_name, "w");
 
                 hhin= fsource; 
@@ -168,14 +175,19 @@ int main(int argc, char ** argv){
         
                 yyin = fopen(filename, "r");
                 if (!yyin) {
-                    perror("Could not open file");
+                    fprintf(stderr, "Could not open file : exiting \n");
+
+                    free_mat(environment);
+                    free_stack(stack);
+                    free_table(table);
+
                     exit(-1);
                 }
                 yyparse();
                 progempty=0;
                 fclose(yyin);
             }else{
-                fprintf(stderr ,"mode is neiter symbol nor hexa; exiting\n");
+                fprintf(stderr ,"mode is neiter symbol nor hexa : exiting\n");
 
                 free_mat(environment);
                 free_stack(stack);
@@ -185,7 +197,6 @@ int main(int argc, char ** argv){
 
         /*translating prog and executing*/
     
-       // parsed_to_int(prog);
         unsigned char printcheck;
         exec_prgm(prog, environment, stack, table , &printcheck);
 
