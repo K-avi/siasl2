@@ -14,7 +14,7 @@
 
 
 [ \t\n]+    { ; }
-\{(.|[\r\n])*?\} {;}
+\{(.|[\r\n])*?\} { ;}
 "."         { return TOKEN(PRINT); }
 ","         { return TOKEN(READ); }
 ">"         { return TOKEN(RIGHT); }
@@ -32,6 +32,6 @@
 ")"         { return TOKEN(RPAR); }
 "?"         { return TOKEN(WILDCARD); }
 
-.           { return TOKEN(INVALID_CHAR);}
+.           { printf("inval char\n"); return TOKEN(INVALID_CHAR);}
 
 %%

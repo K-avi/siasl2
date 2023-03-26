@@ -22,7 +22,9 @@ once compiler the (SIASL)² interpreter can be called with arguments :
 -s starts (SIASL)² with bf-like symbol lexic.
 -f reads a program from a file
 -h prints out help 
--x starts (SIASL)² with hexadecimal lexic instead of normal bf-like symbols
+-x starts (SIASL)² with hexadecimal lexic instead of normal bf-like symbols 
+   nb: hexsiasl's current implementation is pretty awful and has worse performance than normal
+       (SIASL)²
 
 the default behavior of siasl2 when executed is to load the command line interpreter with the 
 bf-like lexic (-sc)

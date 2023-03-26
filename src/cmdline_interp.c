@@ -111,9 +111,11 @@ void interactive_interp( CELLMATRIX * environment, S_STACK * stack, unsigned cha
          
  
          if(!syntax_err) {
+   
 
             exec_prgm(prog, environment, stack, table, &printcheck);
             free_prog(prog);
+            prog=NULL;
          }
          progempty=1;    
          yylex_destroy();
