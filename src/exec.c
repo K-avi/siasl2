@@ -136,7 +136,7 @@ int checkDefaultSymbol(Symbol sym){
 int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotable * table, unsigned char * printcheck) {
 
   if(! (progr && environment && stack && table)) {
-    //printf("%p %p %p %p\n", progr, environment, stack, table);
+    //("%p %p %p %p\n", progr, environment, stack, table);
     return -1;
   }
   instruction* curr = progr->head;
@@ -157,7 +157,7 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotab
     
     unsigned short instruction = curr->symbol;
 
-    //printf("instruct is %c%c\n",  token_to_char(instruction&0xF), token_to_char( instruction >>4));
+  
 
     switch (instruction) {
 
@@ -585,27 +585,25 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotab
           curr=curr->other;
           break;
           }else{
-          // printf("lpar curr ->prev %p\n", curr->prev);
+     
             break;
         }
       
       case (INT_RPAR<<4) | INT_NEUT:
 
         if(exec_direction){
-          //printf("reached parclose\n");
-
+          
 
         }else{
-        //  printf("parclose: %p\n", curr->other);
+     
           curr=curr->other;
         }
         break;
 
       default: 
-       //   printf("placeholder default instruct %x\n", instruction);
         if(1){
           program * tmpProg= findProg(table, instruction);
-          //printf("tmprog is %p\n", tmpProg );
+          
           if(tmpProg){
             exec_prgm(tmpProg, environment, stack, table, printcheck);
           }

@@ -87,7 +87,7 @@ int main(int argc, char ** argv){
             else if (isprint(optopt))
             fprintf(stderr, "Unknown option `-%c'.\n", optopt);
             else
-            fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
+            fprintf(stderr, "Unknown option character `\\x%x'.", optopt);
        
             exit(-2);
         default:

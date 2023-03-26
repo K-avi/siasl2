@@ -31,7 +31,7 @@
   struct program * prog;
 }
 
-%token <token> PRINT READ LEFT RIGHT UP DOWN PLUS MINUS MULT DIV NEUTRAL WILDCARD LPAR RPAR
+%token <token> PRINT READ LEFT RIGHT UP DOWN PLUS MINUS MULT DIV NEUTRAL WILDCARD LPAR RPAR 
 %token <token> LBRACKET RBRACKET
 
 %type <instruction> stmts stmt loop defun
@@ -42,7 +42,6 @@
 
 %start program
 
-%expect 42
 
 
 %destructor { ; } <instruction>
@@ -53,12 +52,14 @@ program
   : stmts { prog=initProg();  progMerge(prog, $1); }
 ;
 
+
 stmts
-  : stmt        { $$ = $1; }
+  : stmt    { $$ = $1; }
   | defun       { $$=$1 ; }
   | stmts stmt  { mergeInstruction($$ = $1, $2); }
   | stmts error { free_instruct($1) ; $$=NULL; YYABORT; }
   | stmts defun { mergeInstruction($$ = $1, $2);  }
+
 
 ;
 
@@ -97,6 +98,7 @@ funend
 stmt
   : loop { $$ = $1; }
   | symbol   { $$ = mkinstruction($1); }
+
   
 ;
 
@@ -112,7 +114,6 @@ loop
       $$ = mkinstruction($1);
       $$->next = mkinstruction($2);
       $$->other = $$->next;
-      
       $$->other->other = $$;
     }
   
@@ -205,8 +206,6 @@ symbol
 
   | NEUTRAL syllable {$$=symbol_from_syllable( $2, $1);};
   | syllable NEUTRAL {$$=symbol_from_syllable( $2, $1);}
-
-  | syllable {$$=symbol_from_syllable( NEUTRAL, $1);}
 ;
 
 syllable

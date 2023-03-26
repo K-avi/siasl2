@@ -9,9 +9,12 @@
   #define TOKEN(t) yylval.token = (t)
 %}
 
+
 %%
 
+
 [ \t\n]+    { ; }
+
 "."         { return TOKEN(PRINT); }
 ","         { return TOKEN(READ); }
 ">"         { return TOKEN(RIGHT); }
@@ -28,7 +31,6 @@
 "("         { return TOKEN(LPAR); }
 ")"         { return TOKEN(RPAR); }
 "?"         { return TOKEN(WILDCARD); }
-
 .           { ; }
 
 %%

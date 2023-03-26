@@ -148,18 +148,16 @@ void appTable ( macrotable * mtable, macroentry * entry){
 
     unsigned key= hashSymbol(entry->sym, mtable->size);
 
-  //  printf("key is %d , %p \n", key, mtable->table[key]);
 
     if(! (mtable->table[key])) {
         mtable->table[key]=initArr(_ARRENT_DEF_SIZE);
     }
-    // printf("key is %d , %p \n", key, mtable->table[key]);
+  
     appArr(mtable->table[key], entry);
 
    // free_macroentry(entry);
     
-}//not tested 
-//doesnt handle case where it's already defined! !!!!!!!!!!!!!
+}// tested 
 
 
 
