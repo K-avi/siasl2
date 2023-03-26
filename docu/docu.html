@@ -59,7 +59,7 @@
                 I made before making this one and was a way for me to learn a few stuff before doing (SIASL)² ).
                 The main thing differentiating (SIASL)² from these languages is that a (SIASL)² instruction is a combination of two characters instead of one. 
                 (check out parts <a href=#p3>III</a> and <a href=#p3>IV</a> for more details).
-                Crucially (SIASL)² instructions are commutative; which means that "+#" is the exact same thing as "#+" 
+                Crucially (SIASL)² instructions are commutative; which means that <code>+&sharp;</code> is the exact same thing as <code>&sharp;+</code> 
                 which limits the amount of instructions that can be created in (SIASL)² but makes it (in my opinion)
                 easier to use.
                
@@ -74,8 +74,8 @@
                 <h4><em>II.1: how is the (SIASL)² environment represented?</em></h4>
                 <p class="text-left">
                     similarly to brainfuck ; (SIASL)² does operation on cells containing numbers. However the structure containing 
-                    these cells is a square matrix instead of an array. This allows movement in 4 directions instead of two. 
-                    ( < , > , v , ^ ) related operations.
+                    these cells is a square matrix instead of an array. This allows movement in 4 directions instead of two 
+                    ( < , > , v , ^  related operations).
                     
                     Each cell contains a signed integer. It's value can be modified by a lot of different operations. 
                     When reaching the end of a "line" in the matrixprintf and trying to go to the right the data pointer will be move to the next one. 
@@ -170,6 +170,9 @@
                     (SIASL)² supports a number of instructions that are variations on the defaults
                     <code>*&sharp;</code>  <code>+&sharp;</code>  <code>-&sharp;</code> and  <code>/&sharp;</code> 
                     instructions.
+                    <br/>NB: <code>/</code> related operations won't try to divide by zero. If they are 
+                        called in a context where they would have to calculate a division by zero they are 
+                        skipped.
                 </p> 
                 <table class="table table-bordered table-light">
                     <tbody>
@@ -229,7 +232,7 @@
                         <tr>
                             <td style="text-align:center"> <code>v-</code></td>
                             <td>
-                                substracts the value stored in the downwards
+                                substracts the value stored in the cell downwards
                                 from the one in the current cell and stores it in the 
                                 current cell
                             </td>  
@@ -263,7 +266,7 @@
                             <td style="text-align:center"> <code>v*</code></td>
                             <td>
                                 multiplies the value stored in the current cell with 
-                                the one downwards and 
+                                the one stored in the cell downwards and 
                                 stores it in the current cell
                             </td>  
                         </tr>
@@ -271,7 +274,7 @@
                             <td style="text-align:center"> <code>^*</code></td>
                             <td>
                                 multiplies the value stored in the current cell with 
-                                the one upwards and 
+                                the one stored in the cell upwards and 
                                 stores it in the current cell
                             </td>  
                         </tr>
@@ -287,7 +290,7 @@
                         <tr>
                             <td style="text-align:center"> <code>&lt;/</code></td>
                             <td>
-                            calculates the result of the integer division of the value stored in 
+                               calculates the result of the integer division of the value stored in 
                                the current cell by the one stored in the cell on it's left and 
                                stores it in the current cell.
                             </td>  
@@ -465,7 +468,7 @@
                                 "next" one until it reaches the end of the program. 
                                 ie: it will read the program from right to left and stop 
                                 at the end. 
-                                NB: this is the default behavior of (SIASL)²
+                                <br/>NB: this is the default behavior of (SIASL)²
                             </td>
                         </tr>
                         <tr>
@@ -479,8 +482,8 @@
                                 ie: it will read the program from left to right and stop 
                                 at the beginning. Also reverses the role of [* and *] so that open bracket
                                 are seen as closing ones and vide-versa
-                                NB: this can be used at the end of a program to execute it again "backwards"
-                                NB: in the interactive interpreter; the flow of execution is set to default 
+                                <br/>NB: this can be used at the end of a program to execute it again "backwards"
+                                <br/>NB: in the interactive interpreter; the flow of execution is set to default 
                                 after each line evaluated this is done to avoid problems with loops.
                             </td>
                         </tr>
@@ -600,8 +603,8 @@
             <h4><em>IV.1: Presentation</em></h4>
             <p>
                 (SIASL)² allows you to define behavior for every unused symbol/instruction 
-                (a symbol/instruction being two (SIASL)² characters). As for regular instructions; 
-                definable ones are commutative; which means that 
+                (a symbol/instruction being two (SIASL)² characters). Like regular instructions; 
+                definable ones are commutative which means that 
                 <code>?+</code> is the same thing as <code>+?</code>.
                 <br/>
                 At the start of (SIASL)² none of the unused symbols has an effect. 
@@ -612,9 +615,7 @@
                 <br/>
                 Once an expression of this form has been evaluated , [unused symbol] will be replaced 
                 by the instructions after it when evaluating it.
-
                 I will not write all of them down but EVERY symbol that ISN'T documented is settable. 
-
             </p>
             </div>
             <div id="p42">
@@ -623,14 +624,16 @@
                 section exists to describe this behavior.
                 <p>
                 <ul>
-                <li>symbol defining is NOT compatible with the <code>&lt;?</code> operators. 
+                <li>symbol defining is NOT compatible with the <code>&lt;?</code> instruction. 
                 When flow of execution is reversed, redefinition statements are skipped.</li>
-                <li>trying to define a symbol with itself for exemple: (#????#) will cause a stack
-                overflow.</li>
+                <li>defining a symbol with itself and then trying to evaluate it will cause a 
+                    stack overflow. For example if you evaluate <code>??</code> after this definition <code>(&sharp;?? ?? &sharp;)</code>
+                    it will cause a stack overflow.
+                </li>
                 <li>Similarly if the definition of 2 or more symbols mutualy relies on eachother 
                     trying to evaluate them will cause a stack overflow.
                     <br/><br/>
-                    exemple: 
+                    example: 
                         (#??..#)
                         <br/>
                         (#..??#)<br/>
@@ -651,7 +654,7 @@
                     here the first ?? will not do anything; but after the redefinition of .. 
                     it will increment the current cell and print it as an integer.
                     A more formal description of this would be to say that the (SIASL)² environment is 
-                    dynamic instead of static.
+                    dynamic.
                 </li>
                 <li>once a symbol is defined, you can redefine it. It's behavior will be the one of 
                     the last definition. 
@@ -691,8 +694,8 @@
                 The (SIASL)² interpreter supports normal bf-like symbols but 
                 also supports instructions passed as hexadecimal numbers. To use 
                 this lexic instead of the default one, use the -x option when 
-                starting the interpreter.
-            </p>
+                starting the interpreter. However it's implementation is quite bad 
+                and it has worse performance than normal (SIASL)² lexic. 
                 <table class="table table-bordered table-light">
                     <tbody>
                         <tr>

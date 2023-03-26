@@ -177,7 +177,7 @@ int exec_prgm( program* progr, CELLMATRIX* environment, S_STACK* stack, macrotab
 
         case (INT_MULT <<4) | INT_NEUT :environment->mat[idx]*=default_mult_div; break;
 
-        case (INT_DIV <<4) | INT_NEUT: environment->mat[idx]/=default_mult_div; break;
+        case (INT_DIV <<4) | INT_NEUT: if(default_mult_div) {environment->mat[idx]/=default_mult_div;} break;
 
         case (INT_READ<<4 )| INT_NEUT : 
             fflush(stdin);
