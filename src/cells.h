@@ -20,12 +20,6 @@ extern void print_mat( CELLMATRIX* mat);
 #define DEFAULT_MATSIZE 32400 // 180^2
 #define DEFAULT_ROWSIZE 16
 
-//doesnt handle overflows well (returns to 0 if u try to overfluw)
-//will turn into a function for it to work properly ig?
-#define OP_LEFT(index, matsize) ( ( (index) -1)% (matsize))
-#define OP_RIGHT(index, matsize) ( ( (index) + 1) % (matsize))
-#define OP_UP(index, matsize) ( ( (index) - DEFAULT_ROWSIZE ) % (matsize))
-#define OP_DOWN(index, matsize) ( ( (index) + DEFAULT_ROWSIZE ) % (matsize))
 
 
 #endif

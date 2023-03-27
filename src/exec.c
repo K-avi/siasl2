@@ -10,6 +10,13 @@
 #include <string.h>
 #include <unistd.h>
 
+
+int mod(int a, int b)
+{
+    int r = a % b;
+    return r < 0 ? r + b : r;
+}
+
 int default_mult_div=2;
 
 int checkDefaultSymbol(Symbol sym){
